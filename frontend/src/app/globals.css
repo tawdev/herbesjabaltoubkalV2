@@ -1,0 +1,59 @@
+@import "tailwindcss";
+
+@theme {
+  --color-background: hsl(var(--background));
+  --color-foreground: hsl(var(--foreground));
+  --color-card: hsl(var(--card));
+  --color-card-foreground: hsl(var(--card-foreground));
+  --color-primary: hsl(var(--primary));
+  --color-primary-foreground: hsl(var(--primary-foreground));
+  --color-secondary: hsl(var(--secondary));
+  --color-secondary-foreground: hsl(var(--secondary-foreground));
+  --color-accent: hsl(var(--accent));
+  --color-accent-foreground: hsl(var(--accent-foreground));
+  --color-border: hsl(var(--border));
+  --color-input: hsl(var(--input));
+  --color-ring: hsl(var(--ring));
+}
+
+@layer base {
+  :root {
+    --background: 20 66% 99%;
+    --foreground: 20 10% 3%;
+    --card: 0 0% 100%;
+    --card-foreground: 20 10% 3%;
+    --primary: 25 90% 40%;
+    --primary-foreground: 20 66% 99%;
+    --secondary: 40 80% 90%;
+    --secondary-foreground: 40 20% 10%;
+    --accent: 160 60% 30%;
+    --accent-foreground: 160 60% 98%;
+    --border: 20 20% 90%;
+    --input: 20 20% 90%;
+    --ring: 25 90% 40%;
+  }
+
+  .dark {
+    --background: 20 10% 3%;
+    --foreground: 20 66% 99%;
+    --card: 20 10% 5%;
+    --card-foreground: 20 66% 99%;
+    --primary: 25 90% 45%;
+    --primary-foreground: 20 66% 99%;
+    --secondary: 40 20% 10%;
+    --secondary-foreground: 40 80% 90%;
+    --accent: 160 60% 40%;
+    --accent-foreground: 160 60% 98%;
+    --border: 20 15% 15%;
+    --input: 20 15% 15%;
+    --ring: 25 90% 45%;
+  }
+
+  * {
+    @apply border-border;
+  }
+  body {
+    @apply bg-background text-foreground;
+    font-feature-settings: "rlig" 1, "calt" 1;
+  }
+}
