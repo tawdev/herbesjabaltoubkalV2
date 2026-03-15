@@ -1,5 +1,5 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, Query, ParseIntPipe, UseGuards } from '@nestjs/common';
 import { ProductsService } from './products.service';
+import { Controller, Get, Post, Body, Patch, Param, Delete, Query, ParseIntPipe, UseGuards } from '@nestjs/common';
 import { ProductCategory } from '@prisma/client';
 import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 
@@ -14,11 +14,20 @@ export class ProductsController {
     @Query('maxPrice') maxPrice?: string,
     @Query('search') search?: string,
   ) {
+    const validCategories = Object.values(ProductCategory);
+    let safeCategory = undefined;
+    if (category && typeof category === 'string' && validCategories.includes(category as ProductCategory)) {
+      safeCategory = category;
+    }
+
+    const parsedMin = minPrice ? parseFloat(minPrice) : undefined;
+    const parsedMax = maxPrice ? parseFloat(maxPrice) : undefined;
+
     return this.productsService.findAll({
-      category,
-      minPrice: minPrice ? parseFloat(minPrice) : undefined,
-      maxPrice: maxPrice ? parseFloat(maxPrice) : undefined,
-      search,
+      category: safeCategory,
+      minPrice: Number.isNaN(parsedMin) ? undefined : parsedMin,
+      maxPrice: Number.isNaN(parsedMax) ? undefined : parsedMax,
+      search: typeof search === 'string' ? search : undefined,
     });
   }
 

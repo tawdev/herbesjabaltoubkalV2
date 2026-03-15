@@ -1,7 +1,8 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
+import { API_URL } from "@/lib/api";
 
 export default function AdminLoginPage() {
   const [username, setUsername] = useState("");
@@ -10,13 +11,20 @@ export default function AdminLoginPage() {
   const [loading, setLoading] = useState(false);
   const router = useRouter();
 
+  useEffect(() => {
+    const token = localStorage.getItem("token");
+    if (token) {
+      router.push("/admin/dashboard");
+    }
+  }, [router]);
+
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
     setError("");
     setLoading(true);
 
     try {
-      const res = await fetch("http://localhost:3001/auth/login", {
+      const res = await fetch(`${API_URL}/auth/login`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ username, password }),
@@ -42,10 +50,10 @@ export default function AdminLoginPage() {
     <div className="min-h-screen flex items-center justify-center bg-secondary/20 px-4">
       <div className="w-full max-w-md bg-white rounded-[2.5rem] shadow-2xl p-12 border border-secondary/50">
         <div className="flex flex-col items-center gap-4 text-center mb-10">
-          <span className="text-4xl font-bold text-primary italic font-serif">Tawabil</span>
+          <span className="text-4xl font-bold text-primary italic font-serif">Jabal Toubkal</span>
           <div className="space-y-1">
-            <h1 className="text-2xl font-bold tracking-tight">Admin Access</h1>
-            <p className="text-sm text-foreground/50">Please enter your credentials to continue</p>
+            <h1 className="text-2xl font-bold tracking-tight">Admin Portal</h1>
+            <p className="text-[10px] text-foreground/40 font-black uppercase tracking-widest">High Atlas Harvest Management</p>
           </div>
         </div>
 

@@ -1,6 +1,9 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import Image from "next/image";
+import { getRecipes, API_URL } from "@/lib/api";
+import { getRecipeImage } from "@/lib/images";
 
 export default function AdminRecipesPage() {
   const [recipes, setRecipes] = useState<any[]>([]);
@@ -9,8 +12,7 @@ export default function AdminRecipesPage() {
 
   const fetchRecipes = async () => {
     try {
-      const res = await fetch("http://localhost:3001/recipes");
-      const data = await res.json();
+      const data = await getRecipes();
       setRecipes(data);
     } catch (err) {
       console.error(err);
@@ -28,7 +30,7 @@ export default function AdminRecipesPage() {
     
     const token = localStorage.getItem("token");
     try {
-      const res = await fetch(`http://localhost:3001/recipes/${id}`, {
+      const res = await fetch(`${API_URL}/recipes/${id}`, {
         method: "DELETE",
         headers: { Authorization: `Bearer ${token}` },
       });
@@ -60,15 +62,17 @@ export default function AdminRecipesPage() {
           <div key={recipe.id} className="group relative flex flex-col gap-6 p-6 bg-white rounded-[2.5rem] border border-secondary shadow-sm transition-all hover:shadow-xl">
              <div className="relative aspect-video rounded-3xl overflow-hidden grayscale-[50%] group-hover:grayscale-0 transition-all duration-500">
                 <div className="absolute inset-0 bg-primary/10 group-hover:bg-transparent transition-colors z-10" />
-                <img 
-                   src={recipe.image.startsWith('http') ? recipe.image : `/${recipe.image}`} 
-                   className="w-full h-full object-cover"
+                <Image 
+                   src={getRecipeImage(recipe.image, recipe.title)} 
                    alt={recipe.title}
+                   fill
+                   unoptimized
+                   className="object-cover"
                 />
              </div>
              <div className="flex flex-col gap-2">
-                <h3 className="font-bold text-xl truncate">{recipe.title}</h3>
-                <p className="text-xs text-foreground/40 line-clamp-2 italic">{recipe.description}</p>
+                <h3 className="font-bold text-xl truncate">{recipe.title_ar || recipe.title}</h3>
+                <p className="text-xs text-foreground/40 line-clamp-2 italic">{recipe.description_ar || recipe.description}</p>
              </div>
              <div className="flex items-center justify-between mt-auto pt-4 border-t border-secondary/50">
                 <div className="flex items-center gap-2">
