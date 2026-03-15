@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { API_URL } from "@/lib/api";
 
 export default function AdminContactsPage() {
   const [contacts, setContacts] = useState<any[]>([]);
@@ -9,7 +10,7 @@ export default function AdminContactsPage() {
   const fetchContacts = async () => {
     const token = localStorage.getItem("token");
     try {
-      const res = await fetch("http://localhost:3001/contacts", {
+      const res = await fetch(`${API_URL}/contacts`, {
         headers: { Authorization: `Bearer ${token}` },
       });
       const data = await res.json();
