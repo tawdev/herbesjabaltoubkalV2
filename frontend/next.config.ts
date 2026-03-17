@@ -18,6 +18,8 @@ const nextConfig: NextConfig = {
         port: "3001",
       },
     ],
+    qualities: [75, 80],
+    dangerouslyAllowSVG: true,
   },
 };
 

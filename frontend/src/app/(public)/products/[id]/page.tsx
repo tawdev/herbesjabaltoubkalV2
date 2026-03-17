@@ -43,7 +43,7 @@ export default function ProductDetailPage({
             <span className="text-sm font-bold text-accent uppercase tracking-[0.2em]">{product.category}</span>
             <div className="flex items-center justify-between">
               <h1 className="text-5xl font-bold tracking-tight">{product.name}</h1>
-              <span className="text-2xl font-bold text-foreground/20 italic font-serif" dir="rtl">{product.name_ar}</span>
+              <span className="text-2xl font-bold text-foreground/20 italic font-arabic" dir="rtl">{product.name_ar}</span>
             </div>
             <div className="flex items-center gap-4 mt-2">
               <span className="text-yellow-500 font-bold">★★★★★</span>
@@ -61,7 +61,7 @@ export default function ProductDetailPage({
             <span className="text-sm text-foreground/50 font-medium">/ {product.weight}</span>
           </div>
 
-          <p className="text-lg text-foreground/70 leading-relaxed border-l-4 border-primary/20 pl-6 italic">
+          <p className="text-lg text-foreground/70 leading-relaxed border-l-4 border-primary/20 pl-6 italic font-medium">
             {product.description}
           </p>
 

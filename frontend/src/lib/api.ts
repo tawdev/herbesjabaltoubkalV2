@@ -1,4 +1,4 @@
-export const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://127.0.0.1:3001";
+export const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:3001";
 
 export async function getProducts(searchParams: { [key: string]: string | string[] | undefined }) {
   const queryParams = new URLSearchParams();
@@ -28,6 +28,7 @@ export async function getProduct(id: string) {
 }
 
 export async function getRecipes() {
+  console.log(`[DEBUG] getRecipes fetching from: ${API_URL}/recipes`);
   const res = await fetch(`${API_URL}/recipes`, {
     cache: "no-store",
   });

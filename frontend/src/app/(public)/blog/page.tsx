@@ -13,7 +13,7 @@ export default async function BlogPage() {
           <span className="text-primary font-black uppercase tracking-[0.4em] text-xs">Stories & Wisdom</span>
           <h1 className="text-5xl md:text-7xl font-bold tracking-tight">Our Spice Blog</h1>
         </div>
-        <p className="text-foreground/80 max-w-2xl text-lg text-pretty font-semibold">
+        <p className="text-foreground/80 max-w-2xl text-lg text-pretty italic font-semibold font-serif">
           Dive deep into the heritage, medicinal benefits, and culinary secrets of Moroccan Atlas mountain botanicals.
         </p>
       </div>

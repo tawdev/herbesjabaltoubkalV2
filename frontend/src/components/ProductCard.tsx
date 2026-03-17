@@ -36,7 +36,7 @@ export default function ProductCard({ product }: ProductCardProps) {
           alt={product.name}
           fill
           unoptimized
-          sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+          sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
           className="object-contain p-6 transition-transform duration-500 group-hover:scale-110"
         />
         <button 
@@ -52,8 +52,7 @@ export default function ProductCard({ product }: ProductCardProps) {
 
       <Link href={`/products/${product.id}`} className="flex flex-col items-start px-2">
         <span className="text-xs font-bold text-[#8B3D08] uppercase tracking-widest mb-1">{product.category}</span>
-        <h3 className="font-bold text-lg group-hover:text-primary transition-colors line-clamp-1 text-slate-900">{product.name}</h3>
-        <p className="text-xs text-slate-600 line-clamp-1 h-4 font-semibold">{product.name_ar}</p>
+        <h3 className="font-bold text-xl group-hover:text-primary transition-colors line-clamp-1">{product.name}</h3>
         <div className="flex items-center gap-2 mt-3 w-full justify-between">
           <div className="flex flex-col">
             {product.promo_price ? (

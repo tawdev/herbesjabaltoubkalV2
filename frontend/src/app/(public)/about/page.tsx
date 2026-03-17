@@ -2,6 +2,7 @@
 
 import { motion } from "framer-motion";
 import Image from "next/image";
+import { FaHandshake, FaSun, FaLeaf } from "react-icons/fa6";
 
 export default function AboutPage() {
   const brandColor = "#C0560D";
@@ -29,8 +30,8 @@ export default function AboutPage() {
             transition={{ duration: 0.8 }}
           >
             <span className="text-[10px] font-black uppercase tracking-[0.5em] mb-4 block">Our Legacy</span>
-            <h1 className="text-5xl md:text-7xl font-serif italic mb-6">Herbes Jabal Toubkal</h1>
-            <p className="max-w-2xl mx-auto text-lg md:text-xl font-medium text-white/80 leading-relaxed font-serif">
+            <h1 className="text-5xl md:text-7xl italic mb-6">Herbes Jabal Toubkal</h1>
+            <p className="max-w-2xl mx-auto text-lg md:text-xl font-medium text-white/80 leading-relaxed italic">
               Cultivating the essence of the Atlas Mountains, bringing century-old Moroccan botanical wisdom to the modern kitchen.
             </p>
           </motion.div>
@@ -57,21 +58,21 @@ export default function AboutPage() {
           >
             <div className="space-y-4">
               <span className="text-[10px] font-black uppercase tracking-widest text-primary">Heritage</span>
-              <h2 className="text-4xl md:text-5xl font-serif italic">A Journey Through the High Atlas</h2>
+              <h2 className="text-4xl md:text-5xl italic">A Journey Through the High Atlas</h2>
             </div>
-            <p className="text-lg text-foreground/80 leading-relaxed font-serif font-semibold">
+            <p className="text-lg text-foreground/80 leading-relaxed font-semibold">
               Founded at the foot of North Africa's highest peak, Herbes Jabal Toubkal began with a simple vision: to preserve and share the extraordinary aromatic biodiversity of Morocco. 
             </p>
-            <p className="text-lg text-foreground/80 leading-relaxed font-serif font-semibold">
+            <p className="text-lg text-foreground/80 leading-relaxed font-semibold">
               Our journey takes us through remote mountain villages and hidden valleys, where we work hand-in-hand with local harvesters who have mastered the art of ecological gathering over generations.
             </p>
             <div className="flex gap-10 pt-6">
                 <div>
-                    <span className="block text-4xl font-serif italic text-primary">100%</span>
+                    <span className="block text-4xl italic text-primary">100%</span>
                     <span className="text-[10px] font-black uppercase tracking-widest text-foreground/60">Organic Sourcing</span>
                 </div>
                 <div>
-                    <span className="block text-4xl font-serif italic text-primary">25+</span>
+                    <span className="block text-4xl italic text-primary">25+</span>
                     <span className="text-[10px] font-black uppercase tracking-widest text-foreground/60">Spices & Herbs</span>
                 </div>
             </div>
@@ -84,7 +85,7 @@ export default function AboutPage() {
             className="relative h-[600px] rounded-[3rem] overflow-hidden shadow-2xl skew-y-1"
           >
              <Image 
-                src="https://images.unsplash.com/photo-1596733430284-f3da2b8b9392"
+                src="/images/about_market.png"
                 alt="Moroccan Spices Market"
                 fill
                 sizes="(max-width: 1024px) 100vw, 50vw"
@@ -99,8 +100,8 @@ export default function AboutPage() {
         <div className="container mx-auto px-6 text-center space-y-20">
             <div className="max-w-3xl mx-auto space-y-4">
                 <span className="text-[10px] font-black uppercase tracking-widest text-primary">Our Values</span>
-                <h2 className="text-4xl md:text-5xl font-serif italic text-center">Harvested with Heart</h2>
-                <p className="text-lg text-foreground/80 font-serif font-semibold">We believe that true quality comes from a deep respect for the land and the people who nurture it.</p>
+                <h2 className="text-4xl md:text-5xl italic text-center">Harvested with Heart</h2>
+                <p className="text-lg text-foreground/80 font-semibold">We believe that true quality comes from a deep respect for the land and the people who nurture it.</p>
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-3 gap-12">
@@ -108,17 +109,17 @@ export default function AboutPage() {
                     {
                         title: "Ethical Sourcing",
                         desc: "Direct partnerships with mountain cooperatives ensuring fair wages and sustainable community growth.",
-                        icon: "🤝"
+                        icon: <FaHandshake className="text-primary" />
                     },
                     {
                         title: "Sun-Dried Logic",
                         desc: "Preserving the natural oils and vibrant aromas through traditional Atlas sun-drying techniques.",
-                        icon: "☀️"
+                        icon: <FaSun className="text-primary" />
                     },
                     {
                         title: "Carbon Conscious",
                         desc: "Small-batch processing that minimizes our footprint while maximizing flavor integrity.",
-                        icon: "🌿"
+                        icon: <FaLeaf className="text-primary" />
                     }
                 ].map((item, i) => (
                     <motion.div 
@@ -127,11 +128,11 @@ export default function AboutPage() {
                         whileInView={{ opacity: 1, y: 0 }}
                         viewport={{ once: true }}
                         transition={{ delay: i * 0.2 }}
-                        className="p-12 bg-white rounded-[2.5rem] border border-secondary shadow-sm hover:shadow-xl transition-all group"
+                        className="p-12 bg-white rounded-[2.5rem] border border-secondary shadow-sm hover:shadow-xl transition-all group shrink-0"
                     >
-                        <div className="text-5xl mb-8 transform group-hover:scale-110 transition-transform">{item.icon}</div>
-                        <h3 className="text-2xl font-serif italic mb-4">{item.title}</h3>
-                        <p className="text-foreground/80 leading-relaxed font-serif font-medium">{item.desc}</p>
+                        <div className="text-5xl mb-8 transform group-hover:scale-110 transition-transform flex justify-center">{item.icon}</div>
+                        <h3 className="text-2xl italic mb-4">{item.title}</h3>
+                        <p className="text-foreground/80 leading-relaxed font-medium">{item.desc}</p>
                     </motion.div>
                 ))}
             </div>
@@ -148,8 +149,8 @@ export default function AboutPage() {
                 viewport={{ once: true }}
                 className="relative z-10 space-y-8"
             >
-                <h2 className="text-4xl md:text-6xl font-serif italic">Bring the Atlas to Your Table</h2>
-                <p className="max-w-xl mx-auto text-white/80 text-lg font-serif">Experience the authentic flavors of Morocco with our premium collection of hand-selected herbs and spices.</p>
+                <h2 className="text-4xl md:text-6xl italic">Bring the Atlas to Your Table</h2>
+                <p className="max-w-xl mx-auto text-white/80 text-lg">Experience the authentic flavors of Morocco with our premium collection of hand-selected herbs and spices.</p>
                 <div className="pt-8">
                     <a href="/products" className="inline-block bg-white text-primary px-12 py-5 rounded-full font-black uppercase tracking-widest hover:scale-105 transition-all hover:shadow-2xl active:scale-95">
                         Explore Collection

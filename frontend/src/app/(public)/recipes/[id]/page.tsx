@@ -103,7 +103,7 @@ export default async function RecipeDetailPage({
                 <div className="absolute top-0 right-0 w-64 h-64 bg-white/5 rounded-full -translate-y-1/2 translate-x-1/2 blur-3xl group-hover:bg-white/10 transition-colors" />
                 <div className="relative flex-1 text-center md:text-left">
                   <h4 className="text-3xl font-bold text-white mb-4">Did you enjoy this recipe?</h4>
-                  <p className="text-primary-foreground/80 text-lg font-serif italic">Order the authentic herbs and spices used in this dish and enjoy the taste of the Atlas at home.</p>
+                  <p className="text-primary-foreground/80 text-lg italic font-serif">Order the authentic herbs and spices used in this dish and enjoy the taste of the Atlas at home.</p>
                 </div>
                 <Link
                   href="/products"

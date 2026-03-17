@@ -23,7 +23,7 @@ export default async function RecipesPage() {
           <span className="text-foreground/70 font-black uppercase tracking-[0.4em] text-xs">Jabal Toubkal Kitchen</span>
           <h1 className="text-5xl md:text-7xl font-bold tracking-tight">Moroccan Recipes</h1>
         </div>
-        <p className="text-foreground/80 max-w-2xl text-lg text-pretty font-serif italic font-semibold">
+        <p className="text-foreground/80 max-w-2xl text-lg text-pretty italic font-semibold font-serif">
           Master the art of Moroccan cuisine with our curated collection of traditional and modern recipes featuring the finest Atlas herbs.
         </p>
       </div>
@@ -53,7 +53,7 @@ export default async function RecipesPage() {
               <div className="flex flex-col gap-1">
                 <h3 className="text-2xl font-bold group-hover:text-primary transition-colors">{recipe.title}</h3>
               </div>
-              <p className="text-foreground/80 line-clamp-2 text-sm leading-relaxed font-serif italic font-semibold">
+              <p className="text-foreground/80 line-clamp-2 text-sm leading-relaxed italic font-semibold font-serif">
                 {recipe.description}
               </p>
               <div className="flex items-center gap-4 mt-4 pt-6 border-t border-secondary/50">

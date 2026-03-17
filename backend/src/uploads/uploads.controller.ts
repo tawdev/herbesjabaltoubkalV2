@@ -52,4 +52,27 @@ export class UploadsController {
       path: `images/blogs/${file.filename}`,
     };
   }
+
+  @UseGuards(JwtAuthGuard)
+  @Post('recipe')
+  @UseInterceptors(
+    FileInterceptor('file', {
+      storage: diskStorage({
+        destination: join(process.cwd(), '..', 'frontend', 'public', 'images', 'recipes'),
+        filename: (req: any, file: any, cb: any) => {
+          const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1e9);
+          cb(null, `${uniqueSuffix}${extname(file.originalname)}`);
+        },
+      }),
+    }),
+  )
+  uploadRecipeImage(@UploadedFile() file: any) {
+    if (!file) {
+      return { error: 'No file uploaded' };
+    }
+    return {
+      filename: file.filename,
+      path: `images/recipes/${file.filename}`,
+    };
+  }
 }

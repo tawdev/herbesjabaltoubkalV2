@@ -4,17 +4,28 @@ import { useCart } from "@/context/CartContext";
 import Link from "next/link";
 import Image from "next/image";
 import { useEffect, useState } from "react";
+import { usePathname, useRouter } from "next/navigation";
 import { FaBars, FaTimes } from "react-icons/fa";
 
 export default function Header() {
   const { totalItems } = useCart();
   const [isAdmin, setIsAdmin] = useState(false);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const pathname = usePathname();
+  const router = useRouter();
 
   useEffect(() => {
     const token = localStorage.getItem("token");
     setIsAdmin(!!token);
   }, []);
+
+  const handleHomeClick = (e: React.MouseEvent) => {
+    if (pathname === "/") {
+      e.preventDefault();
+      window.scrollTo({ top: 0, behavior: "smooth" });
+      setIsMenuOpen(false);
+    }
+  };
 
   const navLinks = [
     { href: "/", label: "Home" },
@@ -28,7 +39,11 @@ export default function Header() {
   return (
     <header className="sticky top-0 z-50 w-full border-b border-white/10 bg-[#141414]/98 backdrop-blur shadow-2xl">
       <div className="container mx-auto flex h-28 items-center justify-between px-6 lg:px-8">
-        <Link href="/" className="flex items-center gap-2 hover:opacity-90 transition-all hover:scale-105">
+        <Link 
+          href="/" 
+          onClick={handleHomeClick}
+          className="flex items-center gap-2 hover:opacity-90 transition-all hover:scale-105"
+        >
           <Image 
             src="/images/logo/20251202_105020 (1).png"
             alt="Herbes Jabal Toubkal Logo"
@@ -46,6 +61,7 @@ export default function Header() {
             <Link 
               key={link.href}
               href={link.href} 
+              onClick={link.href === "/" ? handleHomeClick : undefined}
               className="text-sm font-bold tracking-wide text-white transition-colors hover:text-primary relative group"
             >
               {link.label}
@@ -80,16 +96,13 @@ export default function Header() {
               {totalItems}
             </span>
           </Link>
-          
-          <Link href={isAdmin ? "/admin/dashboard" : "/admin/login"} className="hidden sm:block rounded-full bg-primary px-7 py-2.5 text-sm font-black text-white transition-all hover:scale-105 hover:shadow-xl active:scale-95">
-            {isAdmin ? "Dashboard" : "Admin"}
-          </Link>
+
 
           {/* Burger Menu Button */}
           <button 
-            className="md:hidden p-2 text-white hover:text-primary transition-colors"
+            className="md:hidden p-2 text-white hover:text-primary transition-colors h-12 w-12 flex items-center justify-center rounded-xl bg-white/5 border border-white/5 active:scale-90"
             onClick={() => setIsMenuOpen(!isMenuOpen)}
-            aria-label="Toggle menu"
+            aria-label={isMenuOpen ? "Fermer le menu" : "Ouvrir le menu"}
           >
             {isMenuOpen ? <FaTimes size={24} /> : <FaBars size={24} />}
           </button>
@@ -104,7 +117,10 @@ export default function Header() {
               <Link
                 key={link.href}
                 href={link.href}
-                onClick={() => setIsMenuOpen(false)}
+                onClick={(e) => {
+                  if (link.href === "/") handleHomeClick(e);
+                  setIsMenuOpen(false);
+                }}
                 className="text-lg font-bold p-2 text-white/90 hover:text-primary transition-colors border-b border-white/5 pb-4"
               >
                 {link.label}

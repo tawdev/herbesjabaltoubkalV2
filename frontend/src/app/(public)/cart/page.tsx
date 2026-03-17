@@ -65,7 +65,9 @@ export default function CartPage() {
     return (
       <div className="container mx-auto py-32 px-6 flex flex-col items-center justify-center text-center">
         <div className="w-24 h-24 bg-emerald-100 rounded-full flex items-center justify-center mb-8 text-4xl text-emerald-600 animate-bounce">
-          ✅
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" className="w-12 h-12">
+            <path strokeLinecap="round" strokeLinejoin="round" d="M9 12.75 11.25 15 15 9.75M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
+          </svg>
         </div>
         <h1 className="text-4xl font-bold mb-4">Commande Réussie !</h1>
         <p className="text-foreground/50 mb-12 max-w-sm">
@@ -102,8 +104,8 @@ export default function CartPage() {
   }
 
   return (
-    <div className="container mx-auto py-24 px-6 lg:px-8">
-      <h1 className="text-4xl font-bold mb-16 tracking-tight">Votre Panier</h1>
+    <div className="container mx-auto py-24 px-6 lg:px-8 text-center md:text-left">
+      <h1 className="text-5xl md:text-7xl font-bold mb-16 tracking-tight">Votre Panier</h1>
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-16">
         {/* Cart Items */}
@@ -163,7 +165,7 @@ export default function CartPage() {
           <div className="p-10 rounded-[2.5rem] bg-secondary/20 border border-secondary/50 sticky top-32">
             {!isCheckingOut ? (
               <>
-                <h2 className="text-xl font-bold mb-8 italic font-serif">Résumé de la commande</h2>
+                <h2 className="text-2xl mb-8 italic font-serif">Résumé de la commande</h2>
                 
                 <div className="flex flex-col gap-5 text-sm font-bold">
                   <div className="flex justify-between text-foreground/50">
@@ -191,7 +193,7 @@ export default function CartPage() {
             ) : (
               <form onSubmit={handleSubmitOrder} className="flex flex-col gap-6">
                 <div className="flex items-center justify-between mb-4">
-                  <h2 className="text-xl font-bold italic font-serif">Vos Informations</h2>
+                  <h2 className="text-2xl italic font-serif">Vos Informations</h2>
                   <button 
                     type="button"
                     onClick={() => setIsCheckingOut(false)}

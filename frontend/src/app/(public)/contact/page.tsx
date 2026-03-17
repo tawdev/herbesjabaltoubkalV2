@@ -10,15 +10,22 @@ export default function ContactPage() {
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    const form = e.currentTarget;
     setLoading(true);
-    const formData = new FormData(e.currentTarget);
+    const formData = new FormData(form);
     const data = {
       name: formData.get("name"),
       email: formData.get("email"),
       message: formData.get("message"),
     };
 
+    // WhatsApp Redirection
+    const whatsappNumber = "+212607790956";
+    const whatsappMessage = `*New Contact Request*%0A%0A*Full Name:* ${data.name}%0A*Email Address:* ${data.email}%0A*Your Message:* ${data.message}`;
+    const whatsappUrl = `https://wa.me/${whatsappNumber.replace('+', '')}?text=${whatsappMessage}`;
+
     try {
+      // Still send to backend for records
       const res = await fetch(`${API_URL}/contacts`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -27,7 +34,9 @@ export default function ContactPage() {
 
       if (res.ok) {
         setSuccess(true);
-        e.currentTarget.reset();
+        form.reset();
+        // Redirect to WhatsApp in a new tab
+        window.open(whatsappUrl, "_blank");
       }
     } catch (err) {
       console.error(err);
@@ -64,7 +73,7 @@ export default function ContactPage() {
           {/* Info */}
           <div className="space-y-12">
             <div className="space-y-6">
-              <h2 className="text-3xl font-bold">Visit our workshop</h2>
+              <h2 className="text-4xl italic">Visit our workshop</h2>
               <p className="text-foreground/60 text-lg leading-relaxed font-medium">
                 Our main office is located in the heart of Marrakech, where we process 
                 only the finest harvests from the High Atlas cooperatives.
@@ -100,7 +109,9 @@ export default function ContactPage() {
                 className="h-full flex flex-col items-center justify-center text-center gap-6"
               >
                 <div className="w-20 h-20 rounded-full bg-emerald-100 flex items-center justify-center text-emerald-600 text-3xl">
-                  ✓
+                  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" className="w-10 h-10">
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M9 12.75 11.25 15 15 9.75M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
+                  </svg>
                 </div>
                 <div className="space-y-2">
                   <h3 className="text-2xl font-bold">Message Sent!</h3>

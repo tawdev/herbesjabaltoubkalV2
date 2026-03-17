@@ -1,10 +1,26 @@
 import type { Metadata } from "next";
-import { Outfit, Playfair_Display } from "next/font/google";
+import { Plus_Jakarta_Sans, Cormorant_Garamond, Cairo } from "next/font/google";
 import { CartProvider } from "@/context/CartContext";
 import "./globals.css";
 
-const outfit = Outfit({ subsets: ["latin"], weight: ["400", "500", "600", "700"] });
-const playfair = Playfair_Display({ subsets: ["latin"], weight: ["400", "600", "700"], variable: '--font-playfair' });
+const sans = Plus_Jakarta_Sans({ 
+  subsets: ["latin"], 
+  weight: ["400", "500", "600", "700", "800"],
+  variable: '--font-sans'
+});
+
+const serif = Cormorant_Garamond({ 
+  subsets: ["latin"], 
+  weight: ["400", "500", "600", "700"],
+  style: ["normal", "italic"],
+  variable: '--font-serif'
+});
+
+const arabic = Cairo({
+  subsets: ["arabic"],
+  weight: ["400", "500", "600", "700", "800", "900"],
+  variable: '--font-arabic'
+});
 
 export const metadata: Metadata = {
   title: "Herbes Jabal Toubkal | High Atlas Premium Spices",
@@ -18,8 +34,8 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className={`${playfair.variable}`} suppressHydrationWarning={true}>
-      <body className={`${outfit.className} antialiased selection:bg-primary/20 selection:text-primary min-h-screen flex flex-col`}>
+    <html lang="en" className={`${sans.variable} ${serif.variable} ${arabic.variable}`} suppressHydrationWarning={true}>
+      <body className={`${sans.className} antialiased selection:bg-primary/20 selection:text-primary min-h-screen flex flex-col`}>
         <CartProvider>
           {children}
         </CartProvider>

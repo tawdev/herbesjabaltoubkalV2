@@ -68,7 +68,11 @@ export default async function ProductsPage({
 
           {products.length === 0 ? (
             <div className="flex flex-col items-center justify-center py-32 bg-secondary/10 rounded-[3rem] border-2 border-dashed border-secondary">
-              <span className="text-6xl mb-6">🌿</span>
+            <span className="text-6xl mb-6 text-primary/20">
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1} stroke="currentColor" className="w-20 h-20">
+                <path strokeLinecap="round" strokeLinejoin="round" d="M12 21a9.004 9.004 0 0 0 8.716-6.747M12 21a9.004 9.004 0 0 1-8.716-6.747M12 21c2.485 0 4.5-4.03 4.5-9S14.485 3 12 3m0 18c-2.485 0-4.5-4.03-4.5-9s2.015-9 4.5-9m0 0c.815 0 1.583.315 2.181.888m-4.362 0C10.417 3.315 11.185 3 12 3" />
+              </svg>
+            </span>
               <p className="font-bold text-2xl">No spices found</p>
               <p className="text-foreground/50 mt-2 font-medium">Try adjusting your filters or search.</p>
               <a href="/products" className="mt-8 text-primary font-black underline underline-offset-4">Reset Filters</a>
