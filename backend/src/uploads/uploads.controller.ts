@@ -1,6 +1,5 @@
 import { Controller, Post, UseInterceptors, UploadedFile, UseGuards } from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
-// @ts-ignore
 import { diskStorage } from 'multer';
 import { extname, join } from 'path';
 import { JwtAuthGuard } from '../auth/jwt-auth.guard';
