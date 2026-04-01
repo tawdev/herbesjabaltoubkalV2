@@ -19,7 +19,7 @@ Create `backend/.env` on the server:
 DATABASE_URL="mysql://USER:PASSWORD@localhost:3306/DB_NAME"
 JWT_SECRET="generate-a-long-random-string"
 JWT_EXPIRES_IN="7d"
-PORT=3001
+PORT=3007
 ```
 
 ### Frontend (.env.local)
@@ -69,7 +69,7 @@ server {
     server_name yourdomain.com;
 
     location / {
-        proxy_pass http://localhost:3000;
+        proxy_pass http://localhost:3008;
         proxy_http_version 1.1;
         proxy_set_header Upgrade $http_upgrade;
         proxy_set_header Connection 'upgrade';
@@ -84,7 +84,7 @@ server {
     server_name api.yourdomain.com;
 
     location / {
-        proxy_pass http://localhost:3001;
+        proxy_pass http://localhost:3007;
         proxy_http_version 1.1;
         proxy_set_header Upgrade $http_upgrade;
         proxy_set_header Connection 'upgrade';

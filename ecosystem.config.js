@@ -7,17 +7,17 @@ module.exports = {
       args: 'run start:prod',
       env: {
         NODE_ENV: 'production',
-        PORT: 3001,
+        PORT: 3007,
       },
     },
     {
       name: 'herbes-frontend',
       cwd: './frontend',
       script: 'npm',
-      args: 'start',
+      args: 'start -- -p 3008',
       env: {
         NODE_ENV: 'production',
-        PORT: 3000,
+        PORT: 3008,
       },
     },
   ],
