@@ -4,7 +4,7 @@ This project consists of a **NestJS Backend** and a **Next.js Frontend**.
 
 ## Prerequisites
 - VPS running Ubuntu (standard on Hostinger)
-- Node.js (v18+) and npm installed
+- Node.js (v20+) and npm installed
 - MySQL Server installed or a remote MySQL DB
 - PM2 (Process Manager) installed: `npm install -g pm2`
 - Nginx (for reverse proxy)

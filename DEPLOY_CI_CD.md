@@ -26,7 +26,15 @@ Allez dans **Settings > Secrets and variables > Actions** sur votre dépôt GitH
 
 ## 2. Préparer le VPS (Première fois uniquement)
 
-Connectez-vous à votre VPS et préparez le terrain :
+Connectez-vous à votre VPS et installez **Node.js 20** (Obligatoire pour Next.js 16) :
+
+```bash
+# Installer Node 20 sur Ubuntu
+curl -fsSL https://deb.nodesource.com/setup_20.x | sudo -E bash -
+sudo apt-get install -y nodejs
+```
+
+Puis préparez le terrain :
 
 ### Cloner le projet
 ```bash
