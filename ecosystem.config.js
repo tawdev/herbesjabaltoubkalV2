@@ -3,8 +3,7 @@ module.exports = {
     {
       name: 'herbes-backend',
       cwd: './backend',
-      script: 'npm',
-      args: 'run start:prod',
+      script: 'dist/src/main.js',
       env: {
         NODE_ENV: 'production',
         PORT: 3007,
