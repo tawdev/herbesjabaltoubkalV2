@@ -49,39 +49,39 @@ export default function Footer() {
           {/* Navigation Links Grid */}
           <div className="lg:col-span-7 grid grid-cols-2 md:grid-cols-3 gap-12">
             <div className="space-y-10">
-               <h4 className="text-xs font-black uppercase tracking-[0.4em] text-[#C5A059]">The Sanctuary</h4>
-               <nav className="flex flex-col gap-6">
-                 {['Home', 'Catalog', 'Ritual Packs', 'Recipes', 'Manuscrits'].map((item) => (
-                    <Link key={item} href={`/${item.toLowerCase() === 'home' ? '' : item.toLowerCase() === 'manuscrits' ? 'blog' : item.toLowerCase() === 'ritual packs' ? 'bundles' : item.toLowerCase()}`} className="text-sm font-bold uppercase tracking-widest text-foreground/40 hover:text-[#C5A059] transition-colors">{item}</Link>
-                 ))}
-               </nav>
+              <h4 className="text-[15px] font-black uppercase tracking-[0.4em] text-[#C5A059]">The Sanctuary</h4>
+              <nav className="flex flex-col gap-6">
+                {['Home', 'Catalog', 'Ritual Packs', 'Recipes', 'Manuscrits'].map((item) => (
+                  <Link key={item} href={`/${item.toLowerCase() === 'home' ? '' : item.toLowerCase() === 'manuscrits' ? 'blog' : item.toLowerCase() === 'ritual packs' ? 'bundles' : item.toLowerCase()}`} className="text-sm font-bold uppercase tracking-[0.2em] text-foreground/40 hover:text-[#C5A059] transition-colors">{item}</Link>
+                ))}
+              </nav>
             </div>
             
             <div className="space-y-10">
-               <h4 className="text-xs font-black uppercase tracking-[0.4em] text-[#C5A059]">Assistance</h4>
-               <nav className="flex flex-col gap-6">
-                 {['Contact', 'Shipping', 'Terms', 'Privacy'].map((item) => (
-                    <Link key={item} href={`/${item.toLowerCase()}`} className="text-sm font-bold uppercase tracking-widest text-foreground/40 hover:text-[#C5A059] transition-colors">{item}</Link>
-                 ))}
-               </nav>
+              <h4 className="text-[15px] font-black uppercase tracking-[0.4em] text-[#C5A059]">Assistance</h4>
+              <nav className="flex flex-col gap-6">
+                {['Contact', 'Shipping', 'Terms', 'Privacy'].map((item) => (
+                  <Link key={item} href={`/${item.toLowerCase()}`} className="text-sm font-bold uppercase tracking-[0.2em] text-foreground/40 hover:text-[#C5A059] transition-colors">{item}</Link>
+                ))}
+              </nav>
             </div>
 
             <div className="space-y-10 col-span-2 md:col-span-1">
-               <h4 className="text-xs font-black uppercase tracking-[0.4em] text-[#C5A059]">Dispatch Center</h4>
-               <div className="flex flex-col gap-8">
-                  <div className="flex items-start gap-4 text-foreground/50 text-sm font-serif italic">
-                     <FaLocationDot size={16} className="mt-1 text-[#C5A059]/40" />
-                     <p>High Atlas Mountains,<br />Marrakech Region, Morocco</p>
-                  </div>
-                  <div className="flex items-center gap-4 text-foreground/50 text-sm tracking-widest">
-                     <FaPhone size={16} className="text-[#C5A059]/40" />
-                     <p>+212 (0) 6XX XXX XXX</p>
-                  </div>
-                  <div className="flex items-center gap-4 text-foreground/50 text-sm tracking-widest group">
-                     <FaEnvelope size={16} className="text-[#C5A059]/40" />
-                     <p className="group-hover:text-[#C5A059] transition-colors">essence@jabaltoubkal.com</p>
-                  </div>
-               </div>
+              <h4 className="text-[15px] font-black uppercase tracking-[0.4em] text-[#C5A059]">Dispatch Center</h4>
+              <div className="flex flex-col gap-8">
+                <div className="flex items-start gap-4 text-foreground/50 text-[14px] font-serif italic">
+                  <FaLocationDot size={18} className="mt-1 text-[#C5A059]/40" />
+                  <p>48 Lot IGUIDER Allal El Fasi<br />Marrakech, Morocco</p>
+                </div>
+                <div className="flex items-center gap-4 text-foreground/50 text-[14px] tracking-widest">
+                  <FaPhone size={18} className="text-[#C5A059]/40" />
+                  <p>+212 (0) 661 118 649</p>
+                </div>
+                <div className="flex items-center gap-4 text-foreground/50 text-[14px] tracking-widest group">
+                  <FaEnvelope size={18} className="text-[#C5A059]/40" />
+                  <p className="group-hover:text-[#C5A059] transition-colors">contact@jabaltoubkal.com</p>
+                </div>
+              </div>
             </div>
           </div>
         </div>
@@ -89,12 +89,20 @@ export default function Footer() {
         {/* Bottom Bar */}
         <div className="pt-20 border-t border-[#C5A059]/10 flex flex-col md:flex-row items-center justify-between gap-12">
            <div className="flex flex-col md:flex-row items-center gap-8 md:gap-16">
-              <span className="text-[11px] font-black uppercase tracking-[0.3em] text-foreground/40 italic">
-                © {new Date().getFullYear()} Jabal Toubkal. Ancestral Heritage Authenticated.
+              <span className="text-[14px] font-bold uppercase tracking-[0.25em] text-foreground/50 italic">
+                © {new Date().getFullYear()} Jabal Toubkal. Developed by{' '}
+                <a 
+                  href="https://cdigital.ma" 
+                  target="_blank" 
+                  rel="noopener noreferrer"
+                  className="text-[#C5A059] hover:text-foreground transition-colors not-italic font-black"
+                >
+                  cdigital.ma
+                </a>
               </span>
               <div className="flex gap-8">
-                 <span className="text-[11px] font-black uppercase tracking-widest text-foreground/30">Currency: MAD</span>
-                 <span className="text-[11px] font-black uppercase tracking-widest text-foreground/30">Region: MENA</span>
+                 <span className="text-[14px] font-bold uppercase tracking-widest text-foreground/30">Currency: MAD</span>
+                 <span className="text-[14px] font-bold uppercase tracking-widest text-foreground/30">Region: MENA</span>
               </div>
            </div>
 

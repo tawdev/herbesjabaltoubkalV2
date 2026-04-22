@@ -1,9 +1,11 @@
 import Image from "next/image";
-import { getRecipe } from "@/lib/api";
+import { getRecipe, getProducts } from "@/lib/api";
 import { notFound } from "next/navigation";
 import { getRecipeImage } from "@/lib/images";
 import Link from "next/link";
 import { FaArrowLeftLong, FaRegClock, FaFireBurner, FaMortarPestle, FaScroll } from "react-icons/fa6";
+import ActionableIngredient from "@/components/ActionableIngredient";
+import EnbodyEssenceButton from "@/components/EnbodyEssenceButton";
 
 export default async function RecipeDetailPage({
   params,
@@ -13,14 +15,38 @@ export default async function RecipeDetailPage({
   const { id } = await params;
   
   let recipe;
+  let products: any[] = [];
   try {
-    recipe = await getRecipe(id);
+    const [recipeData, productsData] = await Promise.all([
+      getRecipe(id),
+      getProducts({}).catch(() => [])
+    ]);
+    recipe = recipeData;
+    products = productsData;
   } catch (error) {
     console.error("Recipe fetch error:", error);
     return notFound();
   }
 
   if (!recipe) notFound();
+
+  // Process ingredients and match with products
+  const ingredientNames = recipe.ingredients.split(',').map((i: string) => i.trim());
+  
+  // Find which products match the ingredients
+  const ingredientsWithProducts = ingredientNames.map((ingName: string) => {
+    // Basic fuzzy matching: if ingredient name is in product name or vice versa
+    const matchingProduct = products.find(p => 
+      p.name.toLowerCase().includes(ingName.toLowerCase()) || 
+      ingName.toLowerCase().includes(p.name.toLowerCase())
+    );
+    return { name: ingName, product: matchingProduct };
+  });
+
+  // Filter products for the "Add All" button (only those found in the database)
+  const availableProducts = ingredientsWithProducts
+    .filter((item: any) => item.product)
+    .map((item: any) => item.product);
 
   return (
     <div className="bg-background min-h-screen pb-32 animate-in fade-in duration-1000">
@@ -71,16 +97,22 @@ export default async function RecipeDetailPage({
                       <h3 className="text-xs font-black uppercase tracking-[0.6em] text-[#C5A059]">Botanical Components</h3>
                    </div>
                    <div className="grid grid-cols-1 md:grid-cols-2 gap-x-12 gap-y-8 bg-card/10 border border-[#C5A059]/5 p-12 rounded-sm shadow-inner">
-                        {recipe.ingredients.split(',').map((ing: string, i: number) => (
-                        <div key={i} className="flex gap-8 group">
-                            <span className="text-[#C5A059]/30 font-serif italic text-2xl group-hover:text-[#C5A059] transition-colors">{(i + 1).toString().padStart(2, '0')}</span>
-                            <div className="pt-2 flex flex-col gap-1">
-                               <span className="text-sm font-black text-foreground uppercase tracking-[0.2em]">{ing.trim()}</span>
-                               <span className="h-[1px] w-0 group-hover:w-full bg-[#C5A059]/20 transition-all duration-700" />
-                            </div>
-                        </div>
+                        {ingredientsWithProducts.map((item: any, i: number) => (
+                          <ActionableIngredient 
+                            key={i} 
+                            name={item.name} 
+                            index={i} 
+                            product={item.product} 
+                          />
                         ))}
                    </div>
+                   
+                   {/* Add All To Cart Button */}
+                   {availableProducts.length > 0 && (
+                     <div className="pt-8">
+                        <EnbodyEssenceButton products={availableProducts} />
+                     </div>
+                   )}
                 </div>
 
                 <div className="space-y-16">

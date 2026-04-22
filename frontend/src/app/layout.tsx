@@ -52,6 +52,7 @@ import { SoundProvider } from "@/context/SoundContext";
 import CustomCursor from "@/components/CustomCursor";
 import PageTransition from "@/components/PageTransition";
 import LuxuryBackground from "@/components/LuxuryBackground";
+import ThemeEclipse from "@/components/ThemeEclipse";
 
 export default function RootLayout({
   children,
@@ -71,6 +72,7 @@ export default function RootLayout({
             <CartProvider>
               <SoundProvider>
                 <LuxuryBackground />
+                <ThemeEclipse />
                 <CustomCursor />
                 <PageTransition>
                   {children}
