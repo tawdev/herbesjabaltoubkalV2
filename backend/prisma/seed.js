@@ -17,10 +17,13 @@ async function main() {
   await prisma.admin.deleteMany({});
 
   // 1. Create Admin
+  const bcrypt = require('bcryptjs');
+  const hashedPassword = await bcrypt.hash('admin123', 10);
+  
   const admin = await prisma.admin.create({
     data: {
       username: 'admin',
-      password: 'hashed_password', // In production, use bcrypt
+      password: hashedPassword,
       email: 'admin@herbesjabaltoubkal.ma',
     },
   });
