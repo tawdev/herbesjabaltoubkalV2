@@ -5,7 +5,7 @@ import { API_URL } from "@/lib/api";
 import { getBlogImage } from "@/lib/images";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
-import { FaFeatherPointed, FaImage, FaCircleExclamation, FaFileContract, FaCheckCircle } from "react-icons/fa6";
+import { FaFeatherPointed, FaImage, FaCircleExclamation, FaFileContract, FaCircleCheck } from "react-icons/fa6";
 
 interface BlogFormProps {
   initialData?: any;
