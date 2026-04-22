@@ -254,7 +254,7 @@ export default function BlogForm({ initialData, mode }: BlogFormProps) {
         >
           {loading ? (
             <div className="w-5 h-5 border-2 border-black/20 border-t-black rounded-full animate-spin" />
-          ) : <FaCheckCircle size={18} />}
+          ) : <FaCircleCheck size={18} />}
           {loading ? "Transforming..." : mode === "create" ? "Seal & Publish Chronicle" : "Re-Seal Ritual Knowledge"}
         </button>
         <button
