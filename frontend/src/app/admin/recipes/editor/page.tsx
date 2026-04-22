@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react";
 import { API_URL } from "@/lib/api";
-import { FaPlus, FaTrash, FaGripLines, FaSave, FaImage, FaPrint } from "react-icons/fa";
+import { FaPlus, FaTrash, FaGripLines, FaSave, FaImage, FaPrint, FaScroll } from "react-icons/fa";
 import { motion, Reorder } from "framer-motion";
 
 interface Block {
