@@ -37,7 +37,7 @@ jobs:
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           port: 22
           script: |
-            cd ~/herbesV2
+            cd /var/www/herbes
             git pull origin main
             
             # Backend
