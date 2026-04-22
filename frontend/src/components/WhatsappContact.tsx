@@ -51,7 +51,7 @@ export default function WhatsappContact() {
                         animate={{ opacity: 1, y: 0, scale: 1 }}
                         exit={{ opacity: 0, y: 50, scale: 0.9 }}
                     >
-                        <div className="p-6 text-white" style={{ background: `linear-gradient(135deg, ${themeColor} 0%, #8B3D08 100%)` }}>
+                        <div className="p-6 text-foreground" style={{ background: `linear-gradient(135deg, ${themeColor} 0%, #8B3D08 100%)` }}>
                             <div className="flex items-center gap-4">
                                 <div className="bg-white/20 p-2 rounded-full backdrop-blur-md">
                                     <FaWhatsapp size={24} />
@@ -60,7 +60,7 @@ export default function WhatsappContact() {
                                     <h3 className="text-lg font-bold">{t.title}</h3>
                                     <div className="flex items-center gap-2">
                                         <div className="w-2 h-2 bg-green-400 rounded-full animate-pulse" />
-                                        <span className="text-xs text-white/80 font-bold">{t.status}</span>
+                                        <span className="text-xs text-foreground/80 font-bold">{t.status}</span>
                                     </div>
                                 </div>
                             </div>
@@ -75,7 +75,7 @@ export default function WhatsappContact() {
                                 className="flex items-center justify-between bg-gray-50 hover:bg-gray-100 p-4 rounded-xl border border-gray-100 transition-all group"
                             >
                                 <div className="flex items-center gap-4">
-                                    <div className="w-12 h-12 rounded-full flex items-center justify-center text-white font-bold text-lg shadow-lg font-serif italic" style={{ backgroundColor: themeColor }}>
+                                    <div className="w-12 h-12 rounded-full flex items-center justify-center text-foreground font-bold text-lg shadow-lg font-serif italic" style={{ backgroundColor: themeColor }}>
                                         JT
                                     </div>
                                     <div>
@@ -95,7 +95,7 @@ export default function WhatsappContact() {
                     onClick={toggleChat}
                     aria-label={isOpen ? "Fermer le support WhatsApp" : "Ouvrir le support WhatsApp"}
                     title={isOpen ? "Fermer le chat" : "Ouvrir le chat"}
-                    className="relative w-14 h-14 rounded-full shadow-2xl flex items-center justify-center text-white overflow-hidden cursor-pointer"
+                    className="relative w-14 h-14 rounded-full shadow-2xl flex items-center justify-center text-foreground overflow-hidden cursor-pointer"
                     style={{ background: isOpen ? '#ef4444' : `linear-gradient(135deg, ${themeColor} 0%, #8B3D08 100%)` }}
                     whileHover={{ scale: 1.1 }}
                     whileTap={{ scale: 0.9 }}

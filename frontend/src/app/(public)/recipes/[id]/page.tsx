@@ -3,115 +3,144 @@ import { getRecipe } from "@/lib/api";
 import { notFound } from "next/navigation";
 import { getRecipeImage } from "@/lib/images";
 import Link from "next/link";
+import { FaArrowLeftLong, FaRegClock, FaFireBurner, FaMortarPestle, FaScroll } from "react-icons/fa6";
 
 export default async function RecipeDetailPage({
   params,
 }: {
-  params: { id: string };
+  params: Promise<{ id: string }>;
 }) {
-  const recipe = await getRecipe(params.id);
+  const { id } = await params;
+  
+  let recipe;
+  try {
+    recipe = await getRecipe(id);
+  } catch (error) {
+    console.error("Recipe fetch error:", error);
+    return notFound();
+  }
 
   if (!recipe) notFound();
 
   return (
-    <div className="container mx-auto py-24 px-6 lg:px-8">
-      <div className="max-w-6xl mx-auto">
-        {/* Navigation */}
-        <div className="mb-12">
-          <Link
-            href="/recipes"
-            aria-label="Back to recipes list"
-            className="text-primary font-bold text-sm hover:underline flex items-center gap-2 transition-all"
-          >
-            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2.5} stroke="currentColor" className="w-4 h-4">
-              <path strokeLinecap="round" strokeLinejoin="round" d="M10.5 19.5 3 12m0 0 7.5-7.5M3 12h18" />
-            </svg>
-            Back to Recipes
-          </Link>
-        </div>
-
-        {/* Recipe Header */}
-        <div className="relative h-[65vh] rounded-[3.5rem] overflow-hidden shadow-2xl mb-20 border-8 border-white">
-          <Image
-            src={getRecipeImage(recipe.image, recipe.title)}
-            alt={recipe.title}
-            fill
-            unoptimized
-            className="object-cover"
-            priority
-          />
-          <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-transparent flex flex-col justify-end p-16">
-            <div className="flex gap-4 mb-6">
-              <span className="bg-primary/90 backdrop-blur-md px-5 py-2 rounded-full text-xs font-black uppercase tracking-widest text-primary-foreground shadow-xl">
-                {recipe.difficulty || 'Medium'}
-              </span>
-              <span className="bg-white/20 backdrop-blur-md px-5 py-2 rounded-full text-xs font-black uppercase tracking-widest text-white shadow-xl flex items-center gap-2">
-                <span className="text-sm">⏱️</span> {recipe.cooking_time}
-              </span>
-            </div>
-            <h1 className="text-6xl md:text-8xl font-bold text-white tracking-tighter mb-4">{recipe.title}</h1>
-          </div>
-        </div>
-
-        <div className="grid lg:grid-cols-12 gap-20">
-          {/* Left: Ingredients */}
-          <div className="lg:col-span-4 space-y-12">
-            <div className="p-10 bg-secondary/10 rounded-[3rem] border border-secondary/50 sticky top-32">
-              <h3 className="text-3xl font-bold mb-10 flex items-center gap-4">
-                <span className="h-10 w-10 flex items-center justify-center rounded-2xl bg-primary/10 text-primary text-xl">✦</span>
-                Ingredients
-              </h3>
-              <ul className="space-y-6">
-                {recipe.ingredients.split(',').map((ing: string, i: number) => (
-                  <li key={i} className="flex gap-4 text-foreground/90 leading-relaxed font-serif italic text-lg border-b border-secondary/30 pb-4 last:border-0 font-medium">
-                    <span className="text-primary font-bold text-sm mt-1">0{i+1}</span>
-                    {ing.trim()}
-                  </li>
-                ))}
-              </ul>
-            </div>
+    <div className="bg-background min-h-screen pb-32 animate-in fade-in duration-1000">
+      <div className="container mx-auto py-20 px-6 lg:px-20">
+        <div className="max-w-[1400px] mx-auto">
+          {/* Back Navigation */}
+          <div className="mb-20">
+            <Link
+              href="/recipes"
+              className="text-foreground/30 text-[10px] font-black uppercase tracking-[0.4rem] hover:text-[#C5A059] transition-all flex items-center gap-6 group"
+            >
+              <FaArrowLeftLong className="group-hover:-translate-x-3 transition-transform" size={16} />
+              The Grimoire Archives
+            </Link>
           </div>
 
-          {/* Right: Steps */}
-          <div className="lg:col-span-8 flex flex-col gap-16">
-            <div className="space-y-12">
-              <div className="flex flex-col gap-2">
-                <span className="text-primary font-black uppercase tracking-[0.4em] text-xs">The Process</span>
-                <h3 className="text-5xl font-bold tracking-tight">Preparation Steps</h3>
-              </div>
-
-              <div className="space-y-16">
-                {recipe.steps.split(/\d+\.\s*/).filter((s: string) => s.trim()).map((step: string, i: number) => (
-                  <div key={i} className="flex gap-10 group">
-                    <div className="flex flex-col items-center gap-4">
-                      <span className="text-7xl font-black text-secondary/30 group-hover:text-primary/20 transition-all duration-500">{(i + 1).toString().padStart(2, '0')}</span>
-                      <div className="w-1 flex-1 bg-gradient-to-b from-secondary/20 to-transparent group-last:hidden" />
+          <div className="grid lg:grid-cols-12 gap-16 lg:gap-32 items-start">
+            {/* Left: Content & Narrative */}
+            <div className="lg:col-span-7 space-y-24 order-2 lg:order-1">
+                <div className="space-y-10">
+                    <div className="flex items-center gap-8">
+                        <div className="flex items-center gap-3 text-[#C5A059]">
+                           <FaFireBurner size={14} />
+                           <span className="text-[10px] font-black uppercase tracking-[0.4em]">{recipe.difficulty || 'Ancestral Ritual'}</span>
+                        </div>
+                        <div className="h-px w-12 bg-[#C5A059]/30" />
+                        <div className="flex items-center gap-3 text-foreground/30">
+                           <FaRegClock size={14} />
+                           <span className="text-[10px] font-black uppercase tracking-[0.4em] font-serif">{recipe.cooking_time}</span>
+                        </div>
                     </div>
-                    <div className="flex flex-col gap-4 pt-4">
-                      <p className="text-xl text-foreground/80 leading-relaxed font-serif italic font-medium">
-                        {step.trim()}
-                      </p>
+                    
+                    <div className="space-y-4">
+                       <h1 className="text-6xl md:text-8xl font-serif text-foreground font-black uppercase leading-[0.85] tracking-tight">{recipe.title}</h1>
+                       <div className="flex justify-end pt-4">
+                          <span className="text-4xl font-serif text-[#C5A059]/40 font-bold font-arabic" dir="rtl">{recipe.title_ar}</span>
+                       </div>
                     </div>
-                  </div>
-                ))}
-              </div>
-            </div>
-
-            {/* Call to Action */}
-            <div className="pt-20">
-              <div className="relative p-12 bg-primary rounded-[3.5rem] overflow-hidden shadow-2xl flex flex-col md:flex-row items-center gap-12 group">
-                <div className="absolute top-0 right-0 w-64 h-64 bg-white/5 rounded-full -translate-y-1/2 translate-x-1/2 blur-3xl group-hover:bg-white/10 transition-colors" />
-                <div className="relative flex-1 text-center md:text-left">
-                  <h4 className="text-3xl font-bold text-white mb-4">Did you enjoy this recipe?</h4>
-                  <p className="text-primary-foreground/80 text-lg italic font-serif">Order the authentic herbs and spices used in this dish and enjoy the taste of the Atlas at home.</p>
+                    
+                    <p className="text-2xl text-foreground/60 font-serif italic leading-relaxed max-w-2xl border-l-[3px] border-[#C5A059]/20 pl-10">
+                        {recipe.description}
+                    </p>
                 </div>
-                <Link
-                  href="/products"
-                  className="relative rounded-full bg-white px-10 py-5 font-black uppercase tracking-widest text-primary shadow-xl transition-all hover:scale-110 active:scale-95 hover:shadow-2xl"
-                >
-                  Shop Now
-                </Link>
-              </div>
+
+                <div className="space-y-12">
+                   <div className="flex items-center gap-6">
+                      <FaMortarPestle size={20} className="text-[#C5A059]" />
+                      <h3 className="text-xs font-black uppercase tracking-[0.6em] text-[#C5A059]">Botanical Components</h3>
+                   </div>
+                   <div className="grid grid-cols-1 md:grid-cols-2 gap-x-12 gap-y-8 bg-card/10 border border-[#C5A059]/5 p-12 rounded-sm shadow-inner">
+                        {recipe.ingredients.split(',').map((ing: string, i: number) => (
+                        <div key={i} className="flex gap-8 group">
+                            <span className="text-[#C5A059]/30 font-serif italic text-2xl group-hover:text-[#C5A059] transition-colors">{(i + 1).toString().padStart(2, '0')}</span>
+                            <div className="pt-2 flex flex-col gap-1">
+                               <span className="text-sm font-black text-foreground uppercase tracking-[0.2em]">{ing.trim()}</span>
+                               <span className="h-[1px] w-0 group-hover:w-full bg-[#C5A059]/20 transition-all duration-700" />
+                            </div>
+                        </div>
+                        ))}
+                   </div>
+                </div>
+
+                <div className="space-y-16">
+                    <div className="flex items-center gap-6">
+                       <FaScroll size={20} className="text-[#C5A059]" />
+                       <h3 className="text-xs font-black uppercase tracking-[0.6em] text-[#C5A059]">Process Sequence</h3>
+                    </div>
+                    <div className="space-y-24">
+                        {recipe.steps.split(/\d+\.\s*/).filter((s: string) => s.trim()).map((step: string, i: number) => (
+                        <div key={i} className="flex flex-col md:flex-row gap-12 group">
+                            <div className="md:w-32 flex flex-col items-center">
+                               <span className="text-6xl font-serif italic font-black text-[#C5A059]/10 group-hover:text-[#C5A059] transition-all duration-700">{(i + 1).toString().padStart(2, '0')}</span>
+                               <div className="h-full w-px bg-[#C5A059]/10 mt-6 group-last:hidden" />
+                            </div>
+                            <div className="flex-1 space-y-6">
+                               <p className="text-xl text-foreground/80 leading-[2] tracking-wide font-serif italic selection:bg-[#C5A059] selection:text-black">
+                                   {step.trim()}
+                               </p>
+                               <div className="h-px w-0 group-hover:w-32 bg-[#C5A059] transition-all duration-1000" />
+                            </div>
+                        </div>
+                        ))}
+                    </div>
+                </div>
+            </div>
+
+            {/* Right: Immersive Media */}
+            <div className="lg:col-span-5 space-y-16 order-1 lg:order-2 lg:sticky lg:top-32">
+                <div className="aspect-[4/5] relative border border-[#C5A059]/10 p-3 bg-black shadow-2xl overflow-hidden rounded-sm group">
+                    <div className="relative w-full h-full overflow-hidden">
+                        <Image
+                            src={getRecipeImage(recipe.image, recipe.title)}
+                            alt={recipe.title}
+                            fill
+                            unoptimized
+                            className="object-cover transition-transform duration-[3s] scale-105 group-hover:scale-125"
+                            priority
+                        />
+                        <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-black/80" />
+                        <div className="absolute bottom-10 left-10 right-10 text-center">
+                           <span className="text-[9px] font-black uppercase tracking-[0.4em] text-white/40">Visual Manifestation</span>
+                        </div>
+                    </div>
+                </div>
+
+                {/* Exclusive CTA */}
+                <div className="p-16 border border-[#C5A059]/20 bg-card relative overflow-hidden group/cta">
+                    <div className="absolute top-0 right-0 p-1 border-b border-l border-[#C5A059]/10 text-[8px] font-black uppercase tracking-[0.3em] text-[#C5A059]/30">Merchant Link</div>
+                    <div className="relative z-10 space-y-10 text-center">
+                        <h4 className="text-3xl font-serif uppercase tracking-widest text-foreground font-black">Embody the <span className="text-[#C5A059]">Essence</span></h4>
+                        <p className="text-[11px] uppercase tracking-[0.4em] leading-relaxed font-bold text-foreground/40 italic">Procure the authentic botanical resources used <br />in this ritual transmission.</p>
+                        <Link
+                            href="/products"
+                            className="inline-block bg-[#C5A059] text-black px-16 py-6 text-[10px] font-black uppercase tracking-[0.5em] hover:bg-white transition-all shadow-xl shadow-[#C5A059]/10"
+                        >
+                            Shop the Artifacts
+                        </Link>
+                    </div>
+                    <div className="absolute -bottom-10 -right-10 text-[120px] text-[#C5A059]/5 font-serif pointer-events-none select-none">"</div>
+                </div>
             </div>
           </div>
         </div>

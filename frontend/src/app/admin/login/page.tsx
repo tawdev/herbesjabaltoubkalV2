@@ -47,43 +47,52 @@ export default function AdminLoginPage() {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-secondary/20 px-4">
-      <div className="w-full max-w-md bg-white rounded-[2.5rem] shadow-2xl p-12 border border-secondary/50">
-        <div className="flex flex-col items-center gap-4 text-center mb-10">
-          <span className="text-4xl font-bold text-primary italic font-serif">Jabal Toubkal</span>
-          <div className="space-y-1">
-            <h1 className="text-2xl font-bold tracking-tight">Admin Portal</h1>
-            <p className="text-[10px] text-foreground/40 font-black uppercase tracking-widest">High Atlas Harvest Management</p>
-          </div>
+    <div className="min-h-screen flex items-center justify-center bg-background px-4 font-serif relative overflow-hidden">
+      {/* Mystical Background Accents */}
+      <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-[#C5A059]/5 blur-[120px] rounded-full -translate-y-1/2 translate-x-1/2" />
+      <div className="absolute bottom-0 left-0 w-[500px] h-[500px] bg-[#C5A059]/5 blur-[120px] rounded-full translate-y-1/2 -translate-x-1/2" />
+
+      <div className="w-full max-w-md bg-card border border-[#C5A059]/10 shadow-[0_0_100px_rgba(0,0,0,0.8)] p-12 relative group">
+        <div className="absolute top-0 left-0 w-2 h-2 border-t border-l border-[#C5A059] opacity-40" />
+        <div className="absolute top-0 right-0 w-2 h-2 border-t border-r border-[#C5A059] opacity-40" />
+        <div className="absolute bottom-0 left-0 w-2 h-2 border-b border-l border-[#C5A059] opacity-40" />
+        <div className="absolute bottom-0 right-0 w-2 h-2 border-b border-r border-[#C5A059] opacity-40" />
+
+        <div className="flex flex-col items-center gap-6 text-center mb-12">
+           <div className="relative">
+             <span className="text-4xl font-serif font-bold text-[#C5A059] tracking-[0.2em] uppercase">Sanctum</span>
+             <div className="w-full h-px bg-gradient-to-r from-transparent via-[#C5A059]/30 to-transparent mt-2" />
+           </div>
+           <p className="text-[9px] text-foreground/30 font-black uppercase tracking-[0.4em]">Administrative Access Required</p>
         </div>
 
-        <form onSubmit={handleLogin} className="space-y-6">
-          <div className="space-y-2">
-            <label className="text-sm font-bold text-foreground/70 ml-1">Username</label>
+        <form onSubmit={handleLogin} className="space-y-10">
+          <div className="space-y-3">
+            <label className="text-[10px] font-black uppercase tracking-[0.3em] text-[#C5A059]/60 ml-1">Identity</label>
             <input
               type="text"
               value={username}
               onChange={(e) => setUsername(e.target.value)}
-              className="w-full rounded-2xl border-secondary/50 bg-secondary/10 px-6 py-4 outline-none focus:ring-2 focus:ring-primary/20 transition-all text-sm font-medium"
-              placeholder="admin"
+              className="w-full bg-black border border-[#C5A059]/10 rounded-none px-6 py-5 outline-none focus:border-[#C5A059] transition-all text-sm font-serif text-foreground tracking-widest placeholder:text-foreground/5"
+              placeholder="Username"
               required
             />
           </div>
 
-          <div className="space-y-2">
-            <label className="text-sm font-bold text-foreground/70 ml-1">Password</label>
+          <div className="space-y-3">
+            <label className="text-[10px] font-black uppercase tracking-[0.3em] text-[#C5A059]/60 ml-1">Codex</label>
             <input
               type="password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
-              className="w-full rounded-2xl border-secondary/50 bg-secondary/10 px-6 py-4 outline-none focus:ring-2 focus:ring-primary/20 transition-all text-sm font-medium"
-              placeholder="••••••••"
+              className="w-full bg-black border border-[#C5A059]/10 rounded-none px-6 py-5 outline-none focus:border-[#C5A059] transition-all text-sm font-serif text-foreground tracking-widest placeholder:text-foreground/5"
+              placeholder="Password"
               required
             />
           </div>
 
           {error && (
-            <div className="p-4 rounded-xl bg-red-50 text-red-600 text-xs font-bold border border-red-100 animate-shake">
+            <div className="p-4 bg-red-950/20 border border-red-900/40 text-red-500 text-[10px] font-black uppercase tracking-[0.2em] text-center animate-shake">
               {error}
             </div>
           )}
@@ -91,15 +100,19 @@ export default function AdminLoginPage() {
           <button
             type="submit"
             disabled={loading}
-            className="w-full rounded-full bg-primary py-4 font-bold text-primary-foreground shadow-lg shadow-primary/20 transition-all hover:scale-[1.02] hover:bg-primary/90 disabled:opacity-50 disabled:scale-100"
+            className="w-full bg-[#C5A059] py-6 text-black text-[10px] font-black uppercase tracking-[0.4em] shadow-2xl hover:bg-white transition-all transform hover:-translate-y-1 relative group overflow-hidden"
           >
-            {loading ? "Authenticating..." : "Sign In"}
+            <span className="relative z-10">{loading ? "Synchronizing..." : "Enter the Sanctum"}</span>
+            <div className="absolute inset-0 bg-white translate-y-full group-hover:translate-y-0 transition-transform duration-500" />
           </button>
         </form>
 
-        <p className="mt-10 text-center text-xs text-foreground/40 font-medium">
-          Protected Area • Authorized Personnel Only
-        </p>
+        <div className="mt-12 flex flex-col items-center gap-4">
+           <div className="w-8 h-px bg-white/5" />
+           <p className="text-center text-[8px] text-foreground/20 font-black uppercase tracking-[0.5em]">
+              Ancestral Guard System v2.0
+           </p>
+        </div>
       </div>
     </div>
   );

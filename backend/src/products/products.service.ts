@@ -1,17 +1,22 @@
 import { Injectable } from '@nestjs/common';
 import { PrismaService } from '../prisma.service';
-import { ProductCategory } from '@prisma/client';
+// ProductCategory import removed as it is now a model
 
 @Injectable()
 export class ProductsService {
   constructor(private prisma: PrismaService) {}
 
-  async findAll(filters: { category?: ProductCategory; minPrice?: number; maxPrice?: number; search?: string }) {
-    const { category, minPrice, maxPrice, search } = filters;
-    
+  async findAll(filters: {
+    categorySlug?: string;
+    minPrice?: number;
+    maxPrice?: number;
+    search?: string;
+  }) {
+    const { categorySlug, minPrice, maxPrice, search } = filters;
+
     return this.prisma.product.findMany({
       where: {
-        ...(category && { category }),
+        ...(categorySlug && { category: { slug: categorySlug } }),
         ...(minPrice !== undefined && { price: { gte: minPrice } }),
         ...(maxPrice !== undefined && { price: { lte: maxPrice } }),
         ...(search && {
@@ -23,6 +28,7 @@ export class ProductsService {
         }),
       },
       include: {
+        category: true,
         reviews: true,
       },
     });
@@ -38,13 +44,41 @@ export class ProductsService {
   }
 
   async create(data: any) {
-    return this.prisma.product.create({ data });
+    const { category, ...rest } = data;
+    let category_id = data.category_id;
+
+    if (category && typeof category === 'string') {
+      const cat = await this.prisma.category.findUnique({ where: { slug: category } });
+      if (cat) {
+        category_id = cat.id;
+      }
+    }
+
+    return this.prisma.product.create({ 
+      data: { 
+        ...rest, 
+        ...(category_id && { category: { connect: { id: category_id } } }) 
+      } 
+    });
   }
 
   async update(id: number, data: any) {
+    const { category, ...rest } = data;
+    let category_id = data.category_id;
+
+    if (category && typeof category === 'string') {
+      const cat = await this.prisma.category.findUnique({ where: { slug: category } });
+      if (cat) {
+        category_id = cat.id;
+      }
+    }
+
     return this.prisma.product.update({
       where: { id },
-      data,
+      data: {
+        ...rest,
+        ...(category_id && { category: { connect: { id: category_id } } })
+      },
     });
   }
 

@@ -1,4 +1,10 @@
-import { Controller, Post, UseInterceptors, UploadedFile, UseGuards } from '@nestjs/common';
+import {
+  Controller,
+  Post,
+  UseInterceptors,
+  UploadedFile,
+  UseGuards,
+} from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { diskStorage } from 'multer';
 import { extname, join } from 'path';
@@ -11,9 +17,17 @@ export class UploadsController {
   @UseInterceptors(
     FileInterceptor('file', {
       storage: diskStorage({
-        destination: join(process.cwd(), '..', 'frontend', 'public', 'images', 'products'),
+        destination: join(
+          process.cwd(),
+          '..',
+          'frontend',
+          'public',
+          'images',
+          'products',
+        ),
         filename: (req: any, file: any, cb: any) => {
-          const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1e9);
+          const uniqueSuffix =
+            Date.now() + '-' + Math.round(Math.random() * 1e9);
           cb(null, `${uniqueSuffix}${extname(file.originalname)}`);
         },
       }),
@@ -34,9 +48,17 @@ export class UploadsController {
   @UseInterceptors(
     FileInterceptor('file', {
       storage: diskStorage({
-        destination: join(process.cwd(), '..', 'frontend', 'public', 'images', 'blogs'),
+        destination: join(
+          process.cwd(),
+          '..',
+          'frontend',
+          'public',
+          'images',
+          'blogs',
+        ),
         filename: (req: any, file: any, cb: any) => {
-          const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1e9);
+          const uniqueSuffix =
+            Date.now() + '-' + Math.round(Math.random() * 1e9);
           cb(null, `${uniqueSuffix}${extname(file.originalname)}`);
         },
       }),
@@ -57,9 +79,17 @@ export class UploadsController {
   @UseInterceptors(
     FileInterceptor('file', {
       storage: diskStorage({
-        destination: join(process.cwd(), '..', 'frontend', 'public', 'images', 'recipes'),
+        destination: join(
+          process.cwd(),
+          '..',
+          'frontend',
+          'public',
+          'images',
+          'recipes',
+        ),
         filename: (req: any, file: any, cb: any) => {
-          const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1e9);
+          const uniqueSuffix =
+            Date.now() + '-' + Math.round(Math.random() * 1e9);
           cb(null, `${uniqueSuffix}${extname(file.originalname)}`);
         },
       }),
@@ -72,6 +102,37 @@ export class UploadsController {
     return {
       filename: file.filename,
       path: `images/recipes/${file.filename}`,
+    };
+  }
+
+  @UseGuards(JwtAuthGuard)
+  @Post('bundle')
+  @UseInterceptors(
+    FileInterceptor('file', {
+      storage: diskStorage({
+        destination: join(
+          process.cwd(),
+          '..',
+          'frontend',
+          'public',
+          'images',
+          'bundles',
+        ),
+        filename: (req: any, file: any, cb: any) => {
+          const uniqueSuffix =
+            Date.now() + '-' + Math.round(Math.random() * 1e9);
+          cb(null, `${uniqueSuffix}${extname(file.originalname)}`);
+        },
+      }),
+    }),
+  )
+  uploadBundleImage(@UploadedFile() file: any) {
+    if (!file) {
+      return { error: 'No file uploaded' };
+    }
+    return {
+      filename: file.filename,
+      path: `images/bundles/${file.filename}`,
     };
   }
 }

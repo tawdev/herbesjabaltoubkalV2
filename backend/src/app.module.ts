@@ -9,9 +9,25 @@ import { AuthModule } from './auth/auth.module';
 import { PrismaModule } from './prisma.module';
 import { BlogsModule } from './blogs/blogs.module';
 import { UploadsModule } from './uploads/uploads.module';
+import { BundlesModule } from './bundles/bundles.module';
+import { UsersModule } from './users/users.module';
+
+import { ConfigModule } from '@nestjs/config';
 
 @Module({
-  imports: [PrismaModule, AuthModule, ProductsModule, RecipesModule, OrdersModule, ContactsModule, BlogsModule, UploadsModule],
+  imports: [
+    ConfigModule.forRoot({ isGlobal: true }),
+    PrismaModule,
+    AuthModule,
+    ProductsModule,
+    RecipesModule,
+    OrdersModule,
+    ContactsModule,
+    BlogsModule,
+    UploadsModule,
+    BundlesModule,
+    UsersModule,
+  ],
   controllers: [AppController],
   providers: [AppService],
 })

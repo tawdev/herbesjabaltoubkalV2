@@ -1,21 +1,23 @@
 import Image from "next/image";
 import Link from "next/link";
-import { getProducts, getRecipes, getBlogs } from "@/lib/api";
-import { getRecipeImage, getBlogImage } from "@/lib/images";
-import { FaLocationDot, FaPhone, FaEnvelope, FaWhatsapp } from "react-icons/fa6";
+import { getProducts, getRecipes, getBlogs, getBundles } from "@/lib/api";
+import { getRecipeImage, getBlogImage, getBundleImage } from "@/lib/images";
+import { FaArrowRightLong, FaLocationDot, FaLeaf, FaScroll } from "react-icons/fa6";
 import ProductCard from "@/components/ProductCard";
+import BundleAddToCartButton from "@/components/BundleAddToCartButton";
 
 export default async function Home() {
-  // Fetch data for home page
   let bestSellers: any[] = [];
   let recipes: any[] = [];
   let blogs: any[] = [];
+  let bundles: any[] = [];
 
   try {
-    const [productsResult, recipesResult, blogsResult] = await Promise.all([
+    const [productsResult, recipesResult, blogsResult, bundlesResult] = await Promise.all([
       getProducts({}).catch(() => []),
       getRecipes().catch(() => []),
       getBlogs().catch(() => []),
+      getBundles().catch(() => []),
     ]);
 
     bestSellers = productsResult.filter((p: any) => p.best_seller).slice(0, 4);
@@ -25,122 +27,124 @@ export default async function Home() {
     
     recipes = recipesResult.slice(0, 3);
     blogs = blogsResult.slice(0, 3);
+    bundles = bundlesResult.slice(0, 3);
   } catch (error) {
     console.error("Failed to fetch home page data:", error);
   }
 
   return (
-    <div className="flex flex-col gap-20 pb-20">
-      {/* Hero Section */}
-      <section className="relative flex h-[80vh] items-center justify-center overflow-hidden bg-background">
+    <div className="flex flex-col bg-background selection:bg-[#C5A059] selection:text-black">
+      {/* 🟢 Monumental Hero Section */}
+      <section className="relative flex h-screen items-center justify-center overflow-hidden">
         <div className="absolute inset-0 z-0">
-          <div className="absolute inset-0 bg-gradient-to-r from-background via-transparent to-transparent z-10" />
-          <Image
-            src="https://images.unsplash.com/photo-1509358271058-acd22cc93898"
-            alt="Authentic Atlas Spices background"
-            fill
-            sizes="100vw"
-            quality={75}
-            className="object-cover opacity-60"
-            priority
-          />
+          <div className="absolute inset-0 bg-gradient-to-b from-black/80 via-black/40 to-background z-10" />
+          <video
+            autoPlay
+            loop
+            muted
+            playsInline
+            className="absolute inset-0 w-full h-full object-cover scale-110"
+            poster="https://images.unsplash.com/photo-1509358271058-acd22cc93898"
+          >
+            <source src="https://cdn.pixabay.com/video/2021/08/04/83863-584742724_large.mp4" type="video/mp4" />
+          </video>
         </div>
         
-        <div className="container mx-auto relative z-20 flex flex-col items-start gap-10 lg:gap-12 px-6 lg:px-8 max-w-7xl">
-          <div className="flex flex-col gap-4">
-            <h1 className="text-5xl sm:text-7xl md:text-8xl lg:text-9xl font-bold tracking-tight text-foreground leading-[0.95] md:leading-[1.05]">
-              Atlas <br />
-              <span className="text-primary italic font-serif">Mountain</span>
-            </h1>
-            <div className="h-1 w-24 bg-primary rounded-full mt-2" />
+        <div className="container mx-auto relative z-20 flex flex-col items-center text-center px-6 max-w-7xl">
+          <div className="overflow-hidden mb-6">
+             <span className="text-[11px] font-black uppercase tracking-[0.8em] text-[#C5A059] block animate-in slide-in-from-bottom-full duration-1000">The Alchemic Heritage</span>
           </div>
-          <p className="max-w-2xl text-xl md:text-2xl text-foreground/80 leading-relaxed font-medium">
-            Explore the authentic heritage of Moroccan botanicals. From sun-drenched valleys 
-            to snow-capped peaks, we bring you the purest harvest from Jabal Toubkal.
+          <h1 className="text-7xl md:text-9xl lg:text-[160px] font-serif text-white font-black leading-[0.8] uppercase mb-12 animate-in fade-in zoom-in-95 duration-1000 delay-200 tracking-tighter">
+            Jabal <br />
+            <span className="italic text-[#C5A059]">Toubkal</span>
+          </h1>
+          <p className="max-w-2xl text-base md:text-lg text-white/50 tracking-[0.2em] font-serif italic leading-loose mb-16 animate-in fade-in slide-in-from-bottom-8 duration-1000 delay-500">
+             Rare botanicals, curated spices, and restorative <br />
+             minerals from the heart of the High Atlas.
           </p>
-          <div className="flex flex-wrap gap-6 mt-6">
-            <Link href="/products" className="rounded-full bg-primary px-10 py-5 text-xl font-black text-primary-foreground shadow-2xl shadow-primary/30 transition-all hover:scale-105 hover:shadow-primary/40 active:scale-95">
-              Explore Collection
-            </Link>
-            <Link href="/recipes" className="rounded-full border-2 border-foreground/10 bg-white/10 backdrop-blur-md px-10 py-5 text-xl font-bold transition-all hover:bg-white/20 hover:border-foreground/20 active:scale-95">
-              View Recipes
+          <div className="flex flex-wrap justify-center gap-10 animate-in fade-in duration-1000 delay-700">
+            <Link href="/products" className="group relative bg-[#C5A059] px-20 py-8 text-[11px] font-black uppercase tracking-[0.5em] text-black transition-all hover:bg-white flex items-center gap-6 shadow-2xl">
+              Unveil Collection
+              <FaArrowRightLong className="group-hover:translate-x-4 transition-transform" />
             </Link>
           </div>
         </div>
+
+        <div className="absolute bottom-16 left-1/2 -translate-x-1/2 z-20">
+           <div className="flex flex-col items-center gap-4 text-[#C5A059]/40">
+              <span className="text-[9px] font-black uppercase tracking-[0.5em] [writing-mode:vertical-lr]">Scroll</span>
+              <div className="w-[1px] h-20 bg-gradient-to-b from-[#C5A059] to-transparent animate-pulse" />
+           </div>
+        </div>
       </section>
 
-      {/* Featured Categories */}
-      <section className="container mx-auto px-6 lg:px-8">
-        <div className="flex flex-col items-center gap-6 text-center mb-20">
-          <div className="flex flex-col gap-2">
-            <span className="text-primary font-black uppercase tracking-[0.4em] text-xs">Curated Selection</span>
-            <h2 className="text-5xl md:text-6xl font-bold tracking-tight">Specialty Categories</h2>
+      {/* 🟠 The Ritual Path - Bundles */}
+      <section className="py-48 container mx-auto px-6 lg:px-20 relative">
+        <div className="absolute top-0 left-1/2 -translate-x-1/2 -translate-y-1/2 text-[200px] font-serif italic text-foreground/[0.02] pointer-events-none select-none">Rituals</div>
+        
+        <div className="flex flex-col items-center text-center mb-32 space-y-6">
+          <div className="flex items-center gap-4">
+             <div className="h-0.5 w-12 bg-[#C5A059]" />
+             <span className="text-[10px] font-black uppercase tracking-[0.6em] text-[#C5A059]">Curated Collections</span>
           </div>
-          <p className="text-foreground/80 text-lg max-w-3xl leading-relaxed font-semibold">From rare mountain herbs to ancient spice blends, explore our curated selection of Moroccan aromatics.</p>
+          <h2 className="text-5xl md:text-7xl font-serif text-foreground font-black uppercase tracking-tight">Le Parcours <span className="italic text-[#C5A059]">Rituel</span></h2>
+          <p className="text-foreground/40 max-w-xl font-serif italic text-lg leading-relaxed pt-4 italic">Complete experiences designed for the modern alchemist.</p>
         </div>
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-10 lg:gap-12">
-          {[
-            {
-              name: "Whole Spices",
-              img: "https://images.unsplash.com/photo-1579613832125-5d34a13ffe2a",
-              count: "45 Items",
-              color: "from-orange-950/90",
-            },
-            {
-              name: "Ground Blends",
-              img: "https://images.unsplash.com/photo-1506905925346-21bda4d32df4",
-              count: "32 Items",
-              color: "from-red-950/90",
-            },
-            {
-              name: "Dried Herbs",
-              img: "https://images.unsplash.com/photo-1501004318641-b39e6451bec6",
-              count: "28 Items",
-              color: "from-emerald-950/90",
-            },
-          ].map((cat) => (
-            <Link
-              key={cat.name}
-              href={`/products?category=${cat.name.toLowerCase()}`}
-              className="group relative overflow-hidden rounded-[3rem] aspect-[4/5] bg-secondary/20 shadow-xl transition-all duration-500 hover:shadow-2xl hover:-translate-y-2 block"
-            >
-              <Image
-                src={cat.img}
-                alt={cat.name}
-                fill
-                sizes="(max-width: 768px) 100vw, 33vw"
-                className="object-cover transition-transform duration-1000 group-hover:scale-110"
-              />
-              <div className={`absolute inset-0 bg-gradient-to-t ${cat.color} via-black/20 to-transparent p-10 flex flex-col justify-end gap-3`}>
-                <span className="text-white/70 text-xs font-black uppercase tracking-[0.2em]">{cat.count}</span>
-                <h3 className="text-3xl font-bold text-white leading-tight">{cat.name}</h3>
-                <span className="mt-4 inline-flex items-center text-white text-sm font-black uppercase tracking-widest border-b-2 border-white/0 hover:border-white transition-all w-fit py-1 opacity-0 group-hover:opacity-100 translate-y-4 group-hover:translate-y-0 duration-500">
-                   Shop Now →
-                </span>
+
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-20 max-w-[1400px] mx-auto">
+          {bundles.length > 0 ? bundles.map((bundle: any) => (
+            <Link key={bundle.id} href={`/bundles/${bundle.id}`} className="group flex flex-col gap-10 hover:-translate-y-4 transition-all duration-700">
+              <div className="relative w-full aspect-[4/5] overflow-hidden border border-[#C5A059]/10 p-2 bg-black shadow-2xl rounded-sm">
+                <div className="relative w-full h-full overflow-hidden grayscale-[0.3] group-hover:grayscale-0 transition-all duration-700">
+                  <Image
+                    src={getBundleImage(bundle.image)}
+                    alt={bundle.name}
+                    fill
+                    unoptimized
+                    className="object-cover transition-transform duration-[3s] group-hover:scale-110"
+                  />
+                </div>
+                <div className="absolute inset-x-8 bottom-8 z-20">
+                   <BundleAddToCartButton bundle={bundle} />
+                </div>
+              </div>
+              <div className="flex flex-col text-center space-y-4 px-6">
+                <div className="space-y-1">
+                   <span className="text-[9px] font-black uppercase tracking-[0.4em] text-[#C5A059]/50 italic">Atlas Collection</span>
+                   <h3 className="text-3xl font-serif text-foreground font-black uppercase tracking-tighter group-hover:text-[#C5A059] transition-colors">{bundle.name}</h3>
+                </div>
+                <p className="text-base text-foreground/40 font-serif italic leading-relaxed line-clamp-2">
+                  {bundle.description}
+                </p>
+                <div className="text-2xl font-serif font-black text-[#C5A059] pt-4 tabular-nums">{parseFloat(bundle.price).toLocaleString()} MAD</div>
               </div>
             </Link>
-          ))}
-        </div>
-      </section>
-
-      {/* Best Sellers Preview */}
-      <section className="bg-secondary/15 py-32">
-        <div className="container mx-auto px-6 lg:px-8">
-          <div className="flex flex-col md:flex-row md:items-end justify-between mb-16 gap-8">
-            <div className="space-y-4">
-              <div className="flex items-center gap-3">
-                <span className="h-0.5 w-12 bg-primary rounded-full" />
-                <span className="text-primary font-black uppercase tracking-widest text-xs">Community Favorites</span>
-              </div>
-              <h2 className="text-5xl font-bold tracking-tight">Best Sellers</h2>
-              <p className="text-foreground/80 text-lg max-w-xl font-semibold">Our community&apos;s favorite flavors, delivered to your kitchen with love and care.</p>
+          )) : (
+            <div className="col-span-3 py-32 text-center border border-dashed border-[#C5A059]/10 rounded-sm">
+              <span className="font-serif italic text-2xl text-foreground/20 uppercase tracking-widest">Gathering the elements for new rituels...</span>
             </div>
-            <Link href="/products" className="group flex items-center gap-3 text-primary font-black uppercase tracking-widest text-sm hover:gap-5 transition-all w-fit">
-              View All Products
-              <span className="text-xl">→</span>
+          )}
+        </div>
+      </section>
+
+      {/* 🟡 Best Sellers - Elixir Selection */}
+      <section className="bg-card/40 py-48 relative overflow-hidden">
+        <div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/dark-matter.png')] opacity-20" />
+        <div className="container mx-auto px-6 lg:px-20 relative z-10">
+          <div className="flex flex-col md:flex-row md:items-end justify-between mb-32 gap-10">
+            <div className="space-y-6">
+               <div className="flex items-center gap-4">
+                  <FaLeaf className="text-[#C5A059]" size={14} />
+                  <span className="text-[10px] font-black uppercase tracking-[0.5em] text-[#C5A059]">Most Treasured</span>
+               </div>
+               <h3 className="text-5xl md:text-7xl font-serif text-foreground font-black uppercase tracking-tighter">Elite <span className="italic text-foreground/30">Selection</span></h3>
+            </div>
+            <Link href="/products" className="group flex items-center gap-6 text-[10px] font-black uppercase tracking-[0.4em] text-[#C5A059] pb-4 border-b border-[#C5A059]/20 hover:border-[#C5A059] transition-all">
+               The Full Vault
+               <FaArrowRightLong className="group-hover:translate-x-4 transition-transform" />
             </Link>
           </div>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 lg:gap-10">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 lg:gap-20">
             {bestSellers.map((product: any) => (
               <ProductCard key={product.id} product={product} />
             ))}
@@ -148,197 +152,88 @@ export default async function Home() {
         </div>
       </section>
 
-      {/* Recipes Preview Section */}
-      <section className="container mx-auto px-6 lg:px-8">
-        <div className="flex flex-col md:flex-row md:items-end justify-between mb-16 gap-8 text-center md:text-left">
-          <div className="space-y-4">
-            <div className="flex items-center gap-3 justify-center md:justify-start">
-              <span className="h-0.5 w-12 bg-primary rounded-full" />
-              <span className="text-primary font-black uppercase tracking-widest text-xs">Atlas Kitchen</span>
-            </div>
-            <h2 className="text-5xl font-bold tracking-tight">Quick Recipes</h2>
-            <p className="text-foreground/80 text-lg max-w-xl font-semibold">Master the art of spices with our curated mountain-inspired recipes.</p>
+      {/* 🔵 The Narrative - Brand Story */}
+      <section className="py-48 relative container mx-auto px-6 lg:px-20">
+        <div className="flex flex-col lg:flex-row items-center gap-24 lg:gap-32">
+          <div className="lg:w-1/2 relative space-y-10 group">
+             <div className="aspect-[4/5] relative rounded-sm overflow-hidden border border-[#C5A059]/10 p-2 bg-black shadow-2xl">
+               <Image
+                 src="https://images.unsplash.com/photo-1506368249639-73a05d6f6488"
+                 alt="Herbal Ritual"
+                 fill
+                 className="object-cover opacity-80 transition-transform duration-[5s] group-hover:scale-110"
+               />
+               <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent" />
+               <div className="absolute bottom-12 left-12">
+                  <span className="text-[10px] font-black uppercase tracking-[0.6em] text-[#C5A059]">High Atlas Sanctuary</span>
+               </div>
+             </div>
+             <div className="absolute -bottom-16 -right-16 w-80 h-[500px] border border-[#C5A059]/10 hidden xl:block -z-10" />
           </div>
-          <Link href="/recipes" className="group flex items-center gap-3 text-primary font-black uppercase tracking-widest text-sm hover:gap-5 transition-all w-fit mx-auto md:mx-0">
-            Explore All Recipes
-            <span className="text-xl">→</span>
-          </Link>
-        </div>
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-10">
-          {recipes.map((recipe: any) => (
-            <Link
-              key={recipe.id}
-              href={`/recipes/${recipe.id}`}
-              className="group flex flex-col gap-6 overflow-hidden rounded-[2.5rem] bg-white border border-secondary/30 transition-all hover:shadow-2xl hover:-translate-y-2 block"
-            >
-              <div className="relative aspect-[4/3] overflow-hidden">
-                <Image
-                  src={getRecipeImage(recipe.image, recipe.title)}
-                  alt={recipe.title}
-                  fill
-                  unoptimized
-                  className="object-cover transition-transform duration-700 group-hover:scale-110"
-                />
-                <div className="absolute top-6 right-6 rounded-full bg-white/95 backdrop-blur-sm px-4 py-2 text-xs font-bold shadow-lg flex items-center gap-2">
-                  <span className="text-lg">⏱️</span> {recipe.cooking_time}
-                </div>
-              </div>
-              <div className="flex flex-col gap-4 p-8 pt-2 text-left">
-                <h3 className="text-2xl font-bold group-hover:text-primary transition-colors">{recipe.title}</h3>
-                <p className="text-foreground/80 line-clamp-2 text-sm leading-relaxed italic font-semibold font-serif">
-                  {recipe.description}
-                </p>
-                <div className="flex items-center gap-4 mt-4 pt-6 border-t border-secondary/30">
-                  <span className="text-xs font-black uppercase tracking-widest text-primary group-hover:tracking-[0.2em] transition-all">View Details</span>
-                  <div className="h-0.5 w-8 bg-primary/20 group-hover:w-16 transition-all" />
-                </div>
-              </div>
-            </Link>
-          ))}
-        </div>
-      </section>
-
-      {/* About Section Preview */}
-      <section className="container mx-auto px-6 lg:px-8 py-10">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-20 items-center">
-          <div className="relative h-[600px] rounded-[3rem] overflow-hidden shadow-2xl skew-y-1 order-2 lg:order-1">
-            <Image
-              src="https://images.unsplash.com/photo-1506368249639-73a05d6f6488"
-              alt="Harvesting Atlas Herbs"
-              fill
-              sizes="(max-width: 1024px) 100vw, 50vw"
-              className="object-cover"
-            />
-            <div className="absolute inset-0 bg-primary/10 mix-blend-multiply" />
-          </div>
-          <div className="space-y-10 order-1 lg:order-2">
-            <div className="space-y-4">
-              <span className="text-primary font-black uppercase tracking-[0.4em] text-xs">Our Heritage</span>
-              <h2 className="text-5xl md:text-6xl font-bold tracking-tight leading-tight">Born in the <br /><span className="text-primary italic">High Atlas</span></h2>
+          <div className="lg:w-1/2 space-y-16">
+            <div className="flex items-center gap-4">
+               <FaScroll className="text-[#C5A059]" />
+               <span className="text-xs font-black uppercase tracking-[0.6em] text-[#C5A059]">Legacy & Soul</span>
             </div>
-            <p className="text-foreground/70 text-xl leading-relaxed font-medium">
-              At Herbes Jabal Toubkal, we source the finest aromatic treasures directly from the mountain cooperatives. 
-              Our journey is one of tradition, respecting the ancient botanical wisdom that has thrived in Morocco for centuries.
+            <h3 className="text-6xl md:text-8xl font-serif text-foreground leading-[0.85] font-black uppercase tracking-tighter">The Ritual <br /><span className="italic text-[#C5A059]">of Ancient</span> Herbs</h3>
+            <p className="text-2xl text-foreground/70 font-serif italic leading-relaxed max-w-xl border-l-[4px] border-[#C5A059]/20 pl-10">
+              &quot;In the heart of the High Atlas, every leaf tells a story of resilience, 
+              sunlight, and ancient wisdom. We do not merely offer botanicals; we transmit 
+              the ancestral soul of Morocco.&quot;
             </p>
-            <div className="space-y-6">
-              {[
-                { title: "Traditional Sourcing", desc: "Hand-harvested by local experts who know the land." },
-                { title: "Natural Sun-Drying", desc: "Preserving the intense aromas through artisanal methods." }
-              ].map((item) => (
-                <div key={item.title} className="flex gap-6">
-                  <div className="flex-shrink-0 w-12 h-12 rounded-2xl bg-primary/10 flex items-center justify-center text-primary">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"><path d="M20 6 9 17l-5-5"/></svg>
-                  </div>
-                  <div>
-                    <h3 className="font-bold text-lg">{item.title}</h3>
-                    <p className="text-foreground/70 font-semibold">{item.desc}</p>
-                  </div>
-                </div>
-              ))}
-            </div>
-            <div className="pt-6 text-center md:text-left">
-              <Link href="/about" className="group flex items-center gap-3 text-primary font-black uppercase tracking-widest text-sm hover:gap-5 transition-all w-fit mx-auto md:mx-0">
-                Discover Our Full Story
-                <span className="text-xl">→</span>
-              </Link>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* Blog Preview Section */}
-      <section className="bg-secondary/15 py-32">
-        <div className="container mx-auto px-6 lg:px-8">
-          <div className="flex flex-col md:flex-row md:items-end justify-between mb-16 gap-8">
-            <div className="space-y-4">
-              <div className="flex items-center gap-3">
-                <span className="h-0.5 w-12 bg-primary rounded-full" />
-                <span className="text-primary font-black uppercase tracking-widest text-xs">Heritage & Wisdom</span>
-              </div>
-              <h2 className="text-5xl font-bold tracking-tight">Latest Stories</h2>
-              <p className="text-foreground/80 text-lg max-w-xl font-semibold">Explore the secrets of traditional botanicals from the High Atlas.</p>
-            </div>
-            <Link href="/blog" className="group flex items-center gap-3 text-primary font-black uppercase tracking-widest text-sm hover:gap-5 transition-all w-fit">
-              Read All Stories
-              <span className="text-xl">→</span>
+            <Link href="/about" className="inline-flex items-center gap-8 bg-foreground text-background px-16 py-8 text-[11px] font-black uppercase tracking-[0.4em] hover:bg-[#C5A059] hover:text-black transition-all rounded-sm shadow-2xl">
+              Our Chronicles
+              <FaArrowRightLong size={16} />
             </Link>
           </div>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-10">
-            {blogs.map((blog: any) => (
-              <Link 
-                key={blog.id} 
-                href={`/blog/${blog.id}`}
-                className="group flex flex-col gap-6 overflow-hidden rounded-3xl bg-white border border-secondary/30 transition-all hover:shadow-2xl hover:-translate-y-2 block"
-              >
-                <div className="relative aspect-[16/10] overflow-hidden">
-                  <Image
-                    src={getBlogImage(blog.image)}
-                    alt={blog.title}
-                    fill
-                    className="object-cover transition-transform duration-700 group-hover:scale-110"
-                  />
-                </div>
-                <div className="flex flex-col gap-3 p-8 pt-2 text-left">
-                  <h3 className="text-2xl font-bold group-hover:text-primary transition-colors line-clamp-2">{blog.title}</h3>
-                  <p className="text-foreground/80 line-clamp-3 text-sm leading-relaxed font-medium">
-                    {blog.excerpt || "Dive deep into the heritage and culinary secrets of Moroccan Atlas mountain botanicals..."}
-                  </p>
-                  <div className="flex items-center gap-4 mt-4 pt-4 border-t border-secondary">
-                    <span className="text-xs font-bold uppercase tracking-widest text-primary">Read More</span>
-                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2.5} stroke="currentColor" className="w-4 h-4 transition-transform group-hover:translate-x-1">
-                      <path strokeLinecap="round" strokeLinejoin="round" d="M13.5 4.5 21 12m0 0-7.5 7.5M21 12H3" />
-                    </svg>
-                  </div>
-                </div>
-              </Link>
-            ))}
-          </div>
         </div>
       </section>
 
-      {/* Contact Section */}
-      <section className="container mx-auto px-6 lg:px-8 py-20 text-center">
-        <div className="bg-white rounded-[4rem] p-12 md:p-24 shadow-2xl shadow-secondary/20 border border-secondary/30 relative overflow-hidden">
-          <div className="absolute top-0 right-0 w-64 h-64 bg-primary/5 rounded-full -translate-y-1/2 translate-x-1/2" />
-          <div className="relative z-10 space-y-10">
-            <div className="space-y-4">
-              <span className="text-primary font-black uppercase tracking-[0.4em] text-xs">Reach Out</span>
-              <h2 className="text-5xl md:text-6xl font-bold tracking-tight">Let&apos;s Connect</h2>
-              <p className="text-foreground/80 text-xl max-w-2xl mx-auto font-medium leading-relaxed">
-                Whether you have a question about our products or want to share your culinary creations, 
-                we&apos;re here to listen and help.
-              </p>
+      {/* 🟣 The Chronicles - Recent Journal Entries */}
+      <section className="py-48 bg-black/20">
+         <div className="container mx-auto px-6 lg:px-20">
+            <div className="text-center mb-32 space-y-6">
+               <span className="text-[10px] font-black uppercase tracking-[0.6em] text-[#C5A059]">Recent Transmissions</span>
+               <h2 className="text-5xl md:text-7xl font-serif text-foreground font-black uppercase tracking-tighter">The Alchemic <span className="italic text-[#C5A059]">Journal</span></h2>
             </div>
-            <div className="flex flex-wrap justify-center gap-6">
-              <Link href="/contact" className="rounded-full bg-primary px-12 py-5 text-xl font-black text-primary-foreground shadow-2xl shadow-primary/30 transition-all hover:scale-105 hover:shadow-primary/40 active:scale-95">
-                Send a Message
-              </Link>
-              <a 
-                href="https://wa.me/+212607790956" 
-                target="_blank" 
-                rel="noopener noreferrer"
-                className="rounded-full border-2 border-primary/20 bg-primary/5 px-12 py-5 text-xl font-black text-primary transition-all hover:bg-primary/10 active:scale-95 flex items-center gap-3"
-              >
-                <FaWhatsapp className="text-2xl" />
-                Chat on WhatsApp
-              </a>
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-16">
+               {blogs.map((blog) => (
+                  <Link key={blog.id} href={`/blog/${blog.id}`} className="group space-y-10">
+                     <div className="aspect-[16/10] relative overflow-hidden border border-[#C5A059]/10 p-1 bg-black rounded-sm group-hover:border-[#C5A059]/40 transition-all duration-700">
+                        <Image src={getBlogImage(blog.image)} alt={blog.title} fill className="object-cover grayscale-[0.6] group-hover:grayscale-0 group-hover:scale-110 transition-all duration-1000" />
+                        <div className="absolute bottom-6 left-6 inline-block bg-background/80 backdrop-blur-md border border-[#C5A059]/20 px-4 py-2 text-[8px] font-bold uppercase tracking-widest text-[#C5A059]">
+                           {new Date(blog.created_at).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}
+                        </div>
+                     </div>
+                     <div className="space-y-4">
+                        <h4 className="text-3xl font-serif text-foreground uppercase font-black tracking-tight group-hover:text-[#C5A059] transition-colors leading-none">{blog.title}</h4>
+                        <p className="text-base text-foreground/40 font-serif italic line-clamp-2 leading-relaxed">{blog.excerpt}</p>
+                     </div>
+                  </Link>
+               ))}
             </div>
-            <div className="pt-10 flex flex-wrap justify-center gap-12 text-sm font-bold text-foreground/40 uppercase tracking-widest">
-              <div className="flex items-center gap-3 bg-secondary/10 px-6 py-3 rounded-2xl hover:bg-secondary/20 transition-all">
-                <FaLocationDot className="text-primary text-lg" />
-                <span>Marrakech, Morocco</span>
-              </div>
-              <div className="flex items-center gap-3 bg-secondary/10 px-6 py-3 rounded-2xl hover:bg-secondary/20 transition-all">
-                <FaPhone className="text-primary text-lg" />
-                <span>+212 524308038</span>
-              </div>
-              <div className="flex items-center gap-3 bg-secondary/10 px-6 py-3 rounded-2xl hover:bg-secondary/20 transition-all">
-                <FaEnvelope className="text-primary text-lg" />
-                <span>contact@herbesjabaltoubkal.com</span>
-              </div>
-            </div>
+         </div>
+      </section>
+
+      {/* 📧 Subscription Ritual */}
+      <section className="py-48 relative overflow-hidden">
+        <div className="container mx-auto px-6 lg:px-20 max-w-5xl text-center flex flex-col items-center gap-16">
+          <div className="space-y-4">
+             <span className="text-[10px] font-black uppercase tracking-[0.6em] text-[#C5A059]">Join the Circle</span>
+             <h3 className="text-5xl md:text-8xl font-serif text-foreground font-black uppercase tracking-tighter">Become a <span className="italic text-[#C5A059]">Chronicler</span></h3>
+          </div>
+          <p className="text-xl text-foreground/50 font-serif italic max-w-xl">Register to receive our secret transmissions, limited harvest alerts, and alchemic guides.</p>
+          <div className="w-full max-w-3xl flex flex-col items-center gap-10">
+            <input 
+              type="email" 
+              placeholder="YOUR SACRED EMAIL ADRESS" 
+              className="w-full bg-transparent border-b border-[#C5A059]/20 py-8 text-2xl font-serif text-foreground text-center focus:outline-none focus:border-[#C5A059] transition-all placeholder:text-foreground/5 uppercase tracking-widest"
+            />
+            <button className="px-24 py-8 bg-[#C5A059] text-black text-[11px] font-black uppercase tracking-[0.5em] hover:bg-white transition-all shadow-2xl rounded-sm">Initiate Membership</button>
           </div>
         </div>
+        {/* Background Decorative */}
+        <div className="absolute top-1/2 left-0 -translate-x-1/2 -translate-y-1/2 text-[300px] font-serif italic text-foreground/[0.01] pointer-events-none select-none">Newsletter</div>
       </section>
     </div>
   );

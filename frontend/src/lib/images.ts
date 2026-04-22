@@ -88,3 +88,16 @@ export function getBlogImage(image: string | null): string {
   // For all uploaded and seeded blog images — serve from public/images/blogs/
   return `/images/blogs/${image}`;
 }
+
+/**
+ * Resolves a bundle image.
+ */
+/**
+ * Resolves a bundle image.
+ */
+export function getBundleImage(image: string, name?: string): string {
+  if (!image) return getNameBasedImage(name) ?? "https://images.unsplash.com/photo-1540189567003-538ed6b23a0c";
+  if (image.startsWith("http")) return image;
+  if (image.startsWith("images/")) return toPublicUrl(image);
+  return toPublicUrl(`images/bundles/${image}`);
+}

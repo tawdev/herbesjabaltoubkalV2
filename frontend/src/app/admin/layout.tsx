@@ -52,11 +52,39 @@ export default function AdminLayout({
       href: "/admin/products" 
     },
     { 
+      name: "Stock Management", 
+      icon: (
+        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10"/><path d="m9 12 2 2 4-4"/></svg>
+      ), 
+      href: "/admin/stock" 
+    },
+    { 
       name: "Recipes", 
       icon: (
         <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 0 0 1-0-5H20"/><path d="M8 7h6"/><path d="M8 11h8"/></svg>
       ), 
       href: "/admin/recipes" 
+    },
+    { 
+      name: "Recipe Editor", 
+      icon: (
+        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>
+      ), 
+      href: "/admin/recipes/editor" 
+    },
+    { 
+      name: "Ritual CRM", 
+      icon: (
+        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+      ), 
+      href: "/admin/crm" 
+    },
+    { 
+      name: "Les Coffrets de l'Atlas", 
+      icon: (
+        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M21 8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16Z"/><path d="M3.3 7 12 12l8.7-5"/><path d="M12 22V12"/></svg>
+      ), 
+      href: "/admin/bundles" 
     },
     { 
       name: "Blog", 
@@ -82,55 +110,63 @@ export default function AdminLayout({
   ];
 
   return (
-    <div className="min-h-screen bg-[#f8f9fa] flex">
+    <div className="min-h-screen bg-background flex text-foreground font-serif">
       {/* Sidebar */}
-      <aside className="w-72 bg-white border-r flex flex-col fixed inset-y-0 z-50">
-        <div className="h-20 flex items-center px-8 border-b">
-          <span className="text-xl font-bold text-primary italic font-serif">Jabal Toubkal <span className="text-xs uppercase not-italic font-black text-foreground/30 tracking-widest ml-1">Admin</span></span>
+      <aside className="w-80 bg-card border-r border-[#C5A059]/20 flex flex-col fixed inset-y-0 z-50 shadow-2xl backdrop-blur-md print:hidden">
+        <div className="h-28 flex flex-col justify-center px-10 border-b border-[#C5A059]/10 bg-gradient-to-br from-[#C5A059]/5 to-transparent">
+          <span className="text-2xl font-bold text-[#C5A059] tracking-[0.2em] uppercase leading-tight font-serif">Jabal Toubkal</span>
+          <span className="text-[10px] uppercase font-black text-foreground/60 tracking-[0.4em] mt-2 flex items-center gap-2">
+            <span className="w-1.5 h-1.5 rounded-full bg-[#C5A059] animate-pulse" />
+            Sanctum Admin
+          </span>
         </div>
         
-        <nav className="flex-1 p-6 space-y-2 overflow-y-auto">
+        <nav className="flex-1 p-8 space-y-4 overflow-y-auto custom-scrollbar">
           {navItems.map((item) => {
             const isActive = pathname === item.href;
             return (
               <Link
                 key={item.href}
                 href={item.href}
-                className={`flex items-center gap-4 px-4 py-3 rounded-2xl text-sm font-bold transition-all ${
+                className={`flex items-center gap-6 px-8 py-5 text-xs font-black uppercase tracking-[0.35em] transition-all duration-500 border ${
                   isActive 
-                  ? "bg-primary text-primary-foreground shadow-lg shadow-primary/20" 
-                  : "text-foreground/60 hover:bg-secondary/50 hover:text-primary"
-                }`}
+                  ? "bg-[#C5A059] text-black border-[#C5A059] shadow-[0_15px_35px_rgba(197,160,89,0.3)] scale-[1.03]" 
+                  : "text-foreground/50 border-transparent hover:text-foreground hover:border-[#C5A059]/30 hover:bg-[#C5A059]/5 hover:translate-x-1"
+                } rounded-sm`}
               >
-                <span className="text-lg">{item.icon}</span>
+                <span className={`transition-transform duration-500 ${isActive ? 'text-black scale-110' : 'text-[#C5A059]'}`}>{item.icon}</span>
                 {item.name}
               </Link>
             );
           })}
         </nav>
 
-        <div className="p-6 border-t mt-auto">
-          <div className="flex items-center gap-3 mb-6 px-2">
-            <div className="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center text-primary font-bold">
+        <div className="p-10 border-t border-[#C5A059]/10 mt-auto bg-black/5">
+          <div className="flex items-center gap-5 mb-8 px-2 group cursor-default">
+            <div className="w-14 h-14 bg-[#C5A059]/10 border border-[#C5A059]/30 flex items-center justify-center text-[#C5A059] font-bold text-2xl rounded-sm group-hover:bg-[#C5A059] group-hover:text-black transition-all">
               {user.username[0].toUpperCase()}
             </div>
-            <div className="flex flex-col">
-              <span className="text-sm font-bold truncate max-w-[120px]">{user.username}</span>
-              <span className="text-[10px] uppercase font-black text-foreground/30 leading-none tracking-widest">Administrator</span>
+            <div className="flex flex-col gap-1">
+              <span className="text-base font-bold uppercase tracking-wider text-foreground truncate max-w-[140px]">{user.username}</span>
+              <span className="text-[11px] uppercase font-black text-[#C5A059]/80 leading-none tracking-[0.3em]">Administrator</span>
             </div>
           </div>
           <button 
             onClick={handleLogout}
-            className="w-full flex items-center justify-center gap-2 px-4 py-3 rounded-2xl bg-red-50 text-red-600 text-sm font-bold transition-all hover:bg-red-100 active:scale-95"
+            className="w-full flex items-center justify-center gap-4 py-5 border border-red-900/40 text-red-600 text-xs font-black uppercase tracking-widest transition-all hover:bg-red-600 hover:text-white rounded-sm group shadow-sm hover:shadow-red-600/20"
           >
-            Log Out
+            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" className="opacity-70 group-hover:opacity-100 transition-opacity"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" x2="9" y1="12" y2="12"/></svg>
+            Vanish (Logout)
           </button>
         </div>
       </aside>
 
       {/* Main Content */}
-      <main className="flex-1 ml-72 p-10">
-        {children}
+      <main className="flex-1 ml-80 p-16 bg-background/50 relative overflow-hidden min-h-screen print:ml-0 print:p-0 print:bg-white">
+        <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-[#C5A059]/5 blur-[150px] -z-10 rounded-full print:hidden" />
+        <div className="relative z-10 print:static">
+          {children}
+        </div>
       </main>
     </div>
   );

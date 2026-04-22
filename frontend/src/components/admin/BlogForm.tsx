@@ -5,6 +5,7 @@ import { API_URL } from "@/lib/api";
 import { getBlogImage } from "@/lib/images";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
+import { FaFeatherPointed, FaImage, FaCircleExclamation, FaFileContract, FaCheckCircle } from "react-icons/fa6";
 
 interface BlogFormProps {
   initialData?: any;
@@ -37,17 +38,15 @@ export default function BlogForm({ initialData, mode }: BlogFormProps) {
 
     const formData = new FormData(e.currentTarget);
     const token = localStorage.getItem("token");
-    console.log('[BlogForm] Token present:', !!token, token ? `${token.substring(0, 30)}...` : 'NONE');
 
     if (!token) {
-      alert('Session expirée. Veuillez vous reconnecter sur /admin/login');
+      alert('Session expired. Please re-authenticate.');
       setLoading(false);
       return;
     }
 
     let imageName = initialData?.image || null;
 
-    // Handle image upload if a new file is selected
     if (selectedFile) {
       try {
         const uploadFormData = new FormData();
@@ -62,17 +61,9 @@ export default function BlogForm({ initialData, mode }: BlogFormProps) {
         if (uploadRes.ok) {
           const uploadData = await uploadRes.json();
           imageName = uploadData.filename;
-        } else {
-          const uploadError = await uploadRes.text();
-          alert(`Image upload failed: ${uploadError}`);
-          setLoading(false);
-          return;
         }
       } catch (err) {
         console.error("Image upload failed:", err);
-        alert("Network error during image upload.");
-        setLoading(false);
-        return;
       }
     }
 
@@ -105,135 +96,173 @@ export default function BlogForm({ initialData, mode }: BlogFormProps) {
       if (res.ok) {
         router.push("/admin/blogs");
         router.refresh();
-      } else {
-        const errText = await res.text();
-        alert(`Failed to save blog: ${errText}`);
       }
     } catch (err) {
       console.error("Failed to save blog:", err);
-      alert("Network error while saving the article.");
     } finally {
       setLoading(false);
     }
   };
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-8 max-w-4xl">
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-        <div className="space-y-6">
-          <div className="space-y-2">
-            <label className="text-sm font-bold uppercase tracking-widest text-foreground/40">Article Title (English)</label>
-            <input
-              name="title"
-              defaultValue={initialData?.title}
-              required
-              placeholder="e.g. The Secrets of Saffron"
-              className="w-full bg-secondary/10 border-none rounded-2xl px-6 py-4 focus:ring-2 focus:ring-primary outline-none transition-all font-medium"
-            />
+    <form onSubmit={handleSubmit} className="space-y-16 animate-in fade-in duration-700">
+      <div className="grid grid-cols-1 lg:grid-cols-12 gap-16">
+        {/* Editorial Section */}
+        <div className="lg:col-span-8 space-y-12">
+          <div className="space-y-10">
+             <div className="flex items-center gap-4 border-b border-[#C5A059]/10 pb-4">
+                <FaFeatherPointed size={16} className="text-[#C5A059]/40" />
+                <h3 className="text-xs font-black uppercase tracking-[0.4em] text-[#C5A059]">Latin Narrative (EN)</h3>
+             </div>
+             
+             <div className="space-y-4">
+               <label className="text-[11px] font-black uppercase tracking-[0.3em] text-[#C5A059]/50">Main Title</label>
+               <input
+                 name="title"
+                 defaultValue={initialData?.title}
+                 required
+                 placeholder="The Essence of Ancestral Trade..."
+                 className="w-full bg-background border-b border-[#C5A059]/20 p-6 text-3xl font-serif text-foreground focus:border-[#C5A059] outline-none transition-all placeholder:text-foreground/5 rounded-sm"
+               />
+             </div>
+
+             <div className="space-y-4">
+               <label className="text-[11px] font-black uppercase tracking-[0.3em] text-[#C5A059]/50">The Prologue (Short Excerpt)</label>
+               <textarea
+                 name="excerpt"
+                 defaultValue={initialData?.excerpt}
+                 required
+                 rows={3}
+                 placeholder="A brief summary for the archival cards..."
+                 className="w-full bg-background border border-[#C5A059]/10 p-8 text-base text-foreground/60 font-serif italic focus:border-[#C5A059] outline-none transition-all resize-none placeholder:text-foreground/5 rounded-sm leading-relaxed"
+               />
+             </div>
           </div>
 
-          <div className="space-y-2 text-right">
-            <label className="text-sm font-bold uppercase tracking-widest text-foreground/40">عنوان المقال (Arabic)</label>
-            <input
-              name="title_ar"
-              defaultValue={initialData?.title_ar}
-              required
-              dir="rtl"
-              placeholder="مثال: أسرار الزعفران"
-              className="w-full bg-secondary/10 border-none rounded-2xl px-6 py-4 focus:ring-2 focus:ring-primary outline-none transition-all font-medium text-lg font-serif"
-            />
-          </div>
+          <div className="space-y-10">
+             <div className="flex items-center justify-end gap-4 border-b border-[#C5A059]/10 pb-4">
+                <h3 className="text-xs font-black uppercase tracking-[0.4em] text-[#C5A059]">النص العربي (AR)</h3>
+                <FaFeatherPointed size={16} className="text-[#C5A059]/40" />
+             </div>
 
-          <div className="space-y-2">
-            <label className="text-sm font-bold uppercase tracking-widest text-foreground/40">Short Excerpt (English)</label>
-            <textarea
-              name="excerpt"
-              defaultValue={initialData?.excerpt}
-              required
-              rows={3}
-              placeholder="A brief summary for the card..."
-              className="w-full bg-secondary/10 border-none rounded-2xl px-6 py-4 focus:ring-2 focus:ring-primary outline-none transition-all font-medium resize-none"
-            />
-          </div>
+             <div className="space-y-4 text-right">
+               <label className="text-[11px] font-black uppercase tracking-[0.3em] text-[#C5A059]/50">العنوان الرئيسي</label>
+               <input
+                 name="title_ar"
+                 defaultValue={initialData?.title_ar}
+                 required
+                 dir="rtl"
+                 placeholder="عنوان المقال الروحي..."
+                 className="w-full bg-background border-b border-[#C5A059]/20 p-6 text-4xl font-serif text-[#C5A059] text-right focus:border-[#C5A059] outline-none transition-all placeholder:text-foreground/5 font-arabic rounded-sm"
+               />
+             </div>
 
-          <div className="space-y-2 text-right">
-            <label className="text-sm font-bold uppercase tracking-widest text-foreground/40">ملخص قصير (Arabic)</label>
-            <textarea
-              name="excerpt_ar"
-              defaultValue={initialData?.excerpt_ar}
-              required
-              dir="rtl"
-              rows={3}
-              placeholder="ملخص موجز للمقال..."
-              className="w-full bg-secondary/10 border-none rounded-2xl px-6 py-4 focus:ring-2 focus:ring-primary outline-none transition-all font-medium resize-none text-lg font-serif"
-            />
+             <div className="space-y-4 text-right">
+               <label className="text-[11px] font-black uppercase tracking-[0.3em] text-[#C5A059]/50">المقدمة (ملخص)</label>
+               <textarea
+                 name="excerpt_ar"
+                 defaultValue={initialData?.excerpt_ar}
+                 required
+                 dir="rtl"
+                 rows={3}
+                 placeholder="ملخص موجز للمقال باللغة العربية..."
+                 className="w-full bg-background border border-[#C5A059]/10 p-8 text-xl text-foreground/60 font-serif italic text-right focus:border-[#C5A059] outline-none transition-all resize-none placeholder:text-foreground/5 font-arabic rounded-sm leading-relaxed"
+               />
+             </div>
           </div>
         </div>
 
-        <div className="space-y-6">
-          <div className="space-y-2">
-            <label className="text-sm font-bold uppercase tracking-widest text-foreground/40">Cover Image</label>
-            <div className="relative aspect-video rounded-3xl overflow-hidden bg-secondary/10 border-2 border-dashed border-secondary flex items-center justify-center group cursor-pointer">
-              {previewImage ? (
-                <Image src={previewImage} alt="Preview" fill className="object-cover" unoptimized />
-              ) : (
-                <div className="flex flex-col items-center gap-2 text-foreground/30">
-                  <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect width="18" height="18" x="3" y="3" rx="2" ry="2"/><circle cx="9" cy="9" r="2"/><path d="m21 15-3.086-3.086a2 2 0 0 0-2.828 0L6 21"/></svg>
-                  <span className="text-xs font-bold uppercase tracking-widest">Upload Photo</span>
-                </div>
-              )}
-              <input
-                type="file"
-                accept="image/*"
-                onChange={handleFileChange}
-                className="absolute inset-0 opacity-0 cursor-pointer"
-              />
-            </div>
-          </div>
+        {/* Media & Meta Section */}
+        <div className="lg:col-span-4 space-y-10">
+           <div className="flex items-center gap-4 border-b border-[#C5A059]/10 pb-4">
+              <FaImage size={16} className="text-[#C5A059]/40" />
+              <h3 className="text-xs font-black uppercase tracking-[0.4em] text-[#C5A059]">Visual Essence</h3>
+           </div>
+
+           <div className="space-y-6">
+              <div className="relative aspect-[4/5] bg-black/40 border-2 border-dashed border-[#C5A059]/10 flex items-center justify-center group cursor-pointer overflow-hidden rounded-sm hover:border-[#C5A059]/40 transition-all shadow-2xl">
+                {previewImage ? (
+                  <Image src={previewImage} alt="Preview" fill className="object-cover group-hover:scale-105 transition-transform duration-1000" unoptimized />
+                ) : (
+                  <div className="flex flex-col items-center gap-6 text-foreground/10 group-hover:text-[#C5A059]/30 transition-colors px-10 text-center">
+                    <FaImage size={48} strokeWidth={1} />
+                    <span className="text-[10px] font-black uppercase tracking-[0.4em]">Transmit Visual Cover</span>
+                  </div>
+                )}
+                <input
+                  type="file"
+                  accept="image/*"
+                  onChange={handleFileChange}
+                  className="absolute inset-0 opacity-0 cursor-pointer z-10"
+                />
+                <div className="absolute inset-0 border-[30px] border-black/40 pointer-events-none opacity-60 group-hover:opacity-20 transition-opacity" />
+              </div>
+
+              <div className="bg-card/50 border border-[#C5A059]/10 p-6 rounded-sm space-y-4">
+                 <div className="flex items-center gap-3 text-xs font-black uppercase tracking-widest text-[#C5A059]/50">
+                    <FaCircleExclamation size={14} />
+                    Publication Tip
+                 </div>
+                 <p className="text-[11px] text-foreground/40 font-serif italic leading-relaxed">
+                   High-resolution portraits (4:5) are recommended for a majestic display in the Grimoire Chronicles.
+                 </p>
+              </div>
+           </div>
         </div>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-        <div className="space-y-2">
-          <label className="text-sm font-bold uppercase tracking-widest text-foreground/40">Article Content (English)</label>
+      {/* Content Section */}
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 pt-16 border-t border-[#C5A059]/10">
+        <div className="space-y-6">
+          <div className="flex items-center gap-4 mb-2">
+             <FaFileContract size={16} className="text-[#C5A059]/40" />
+             <label className="text-xs font-black uppercase tracking-[0.4em] text-[#C5A059]">Detailed Chronicle (EN)</label>
+          </div>
           <textarea
             name="content"
             defaultValue={initialData?.content}
             required
-            rows={12}
-            placeholder="Write your story here..."
-            className="w-full bg-secondary/10 border-none rounded-2xl px-8 py-6 focus:ring-2 focus:ring-primary outline-none transition-all font-serif text-lg leading-relaxed"
+            rows={15}
+            placeholder="Document the deep sequence of the ritual..."
+            className="w-full bg-black/20 border border-[#C5A059]/10 p-10 text-lg leading-relaxed text-foreground/80 font-serif focus:border-[#C5A059] outline-none transition-all rounded-sm resize-none custom-scrollbar"
           />
         </div>
 
-        <div className="space-y-2 text-right">
-          <label className="text-sm font-bold uppercase tracking-widest text-foreground/40">محتوى المقال (Arabic)</label>
+        <div className="space-y-6 text-right">
+          <div className="flex items-center justify-end gap-4 mb-2">
+             <label className="text-xs font-black uppercase tracking-[0.4em] text-[#C5A059]">التفاصيل الروحية (AR)</label>
+             <FaFileContract size={16} className="text-[#C5A059]/40" />
+          </div>
           <textarea
             name="content_ar"
             defaultValue={initialData?.content_ar}
             required
             dir="rtl"
-            rows={12}
-            placeholder="اكتب قصتك هنا..."
-            className="w-full bg-secondary/10 border-none rounded-2xl px-8 py-6 focus:ring-2 focus:ring-primary outline-none transition-all font-serif text-lg leading-relaxed"
+            rows={15}
+            placeholder="اكتب تفاصيل القصة هنا بكل عمق..."
+            className="w-full bg-black/20 border border-[#C5A059]/10 p-10 text-2xl leading-relaxed text-[#C5A059]/80 font-serif focus:border-[#C5A059] outline-none transition-all rounded-sm font-arabic resize-none custom-scrollbar"
           />
         </div>
       </div>
 
-      <div className="pt-6 flex gap-4">
+      {/* Action Footer */}
+      <div className="pt-20 flex flex-col md:flex-row gap-10 border-t border-[#C5A059]/20">
         <button
           type="submit"
           disabled={loading}
-          className="bg-primary text-white px-12 py-5 rounded-full font-black uppercase tracking-[0.2em] shadow-2xl shadow-primary/30 hover:scale-105 active:scale-95 transition-all disabled:opacity-50"
+          className="flex-1 bg-[#C5A059] text-black px-16 py-8 text-[11px] font-black uppercase tracking-[0.5em] shadow-2xl hover:bg-white hover:text-black transition-all disabled:opacity-50 flex items-center justify-center gap-6 rounded-sm font-bold"
         >
-          {loading ? "Saving..." : mode === "create" ? "Publish Article" : "Save Changes"}
+          {loading ? (
+            <div className="w-5 h-5 border-2 border-black/20 border-t-black rounded-full animate-spin" />
+          ) : <FaCheckCircle size={18} />}
+          {loading ? "Transforming..." : mode === "create" ? "Seal & Publish Chronicle" : "Re-Seal Ritual Knowledge"}
         </button>
         <button
           type="button"
           onClick={() => router.back()}
-          className="px-12 py-5 rounded-full font-bold uppercase tracking-widest text-foreground/40 hover:text-foreground transition-all"
+          className="md:w-1/3 py-8 border border-[#C5A059]/20 text-[#C5A059]/40 text-[11px] font-black uppercase tracking-[0.5em] hover:text-[#C5A059] hover:bg-[#C5A059]/5 transition-all rounded-sm"
         >
-          Cancel
+          Dissolve Changes
         </button>
       </div>
     </form>

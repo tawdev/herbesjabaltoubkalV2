@@ -17,6 +17,28 @@ model Admin {
   @@map("admin")
 }
 
+model User {
+  id         Int      @id @default(autoincrement())
+  name       String   @db.VarChar(100)
+  email      String   @unique @db.VarChar(255)
+  password   String   @db.VarChar(255)
+  phone      String?  @db.VarChar(50)
+  address    String?  @db.Text
+  role       String   @default("user") @db.VarChar(20)
+  status     UserStatus @default(INITIE)
+  created_at DateTime @default(now()) @db.Timestamp(0)
+  updated_at DateTime @default(now()) @updatedAt @db.Timestamp(0)
+  orders     Order[]
+
+  @@map("users")
+}
+
+enum UserStatus {
+  INITIE
+  GARDIEN
+  MAITRE
+}
+
 model Contact {
   id          Int            @id @default(autoincrement())
   name        String         @db.VarChar(100)
@@ -32,6 +54,8 @@ model Contact {
 
 model Order {
   id           Int          @id @default(autoincrement())
+  user_id      Int?
+  user         User?        @relation(fields: [user_id], references: [id])
   user_name    String       @db.VarChar(100)
   user_email   String       @db.VarChar(255)
   user_phone   String       @db.VarChar(50)
@@ -42,20 +66,25 @@ model Order {
   updated_at   DateTime     @default(now()) @db.Timestamp(0)
   items        OrderItem[]
 
+  @@index([user_id], map: "user_id")
   @@map("orders")
 }
 
 model OrderItem {
-  id         Int     @id @default(autoincrement())
+  id         Int      @id @default(autoincrement())
   order_id   Int
-  product_id Int
+  product_id Int?
+  bundle_id  Int?
   quantity   Int
-  price      Decimal @db.Decimal(10, 2)
-  order      Order   @relation(fields: [order_id], references: [id], onDelete: Cascade, onUpdate: Restrict, map: "order_items_ibfk_1")
-  product    Product @relation(fields: [product_id], references: [id], onDelete: Cascade, onUpdate: Restrict, map: "order_items_ibfk_2")
+  weight     String?  @db.VarChar(50)
+  price      Decimal  @db.Decimal(10, 2)
+  order      Order    @relation(fields: [order_id], references: [id], onDelete: Cascade)
+  product    Product? @relation(fields: [product_id], references: [id], onDelete: Cascade)
+  bundle     Bundle?  @relation(fields: [bundle_id], references: [id], onDelete: Cascade)
 
   @@index([order_id], map: "order_id")
   @@index([product_id], map: "product_id")
+  @@index([bundle_id], map: "bundle_id")
   @@map("order_items")
 }
 
@@ -67,9 +96,11 @@ model Product {
   weight         String          @db.VarChar(50)
   description    String?         @db.Text
   description_ar String?         @db.Text
-  category       ProductCategory
+  category_id    Int
+  category       Category        @relation(fields: [category_id], references: [id])
   image          String          @db.VarChar(255)
   stock          Int?            @default(0)
+  min_stock      Int?            @default(5)
   rating         Decimal?        @default(0.00) @db.Decimal(3, 2)
   best_seller    Boolean?        @default(false)
   promo          Boolean?        @default(false)
@@ -80,9 +111,23 @@ model Product {
   usage_method   String?         @db.Text
   created_at     DateTime        @default(now()) @db.Timestamp(0)
   order_items    OrderItem[]
+  bundle_items   BundleItem[]
   reviews        Review[]
 
+  @@index([category_id], map: "category_id")
   @@map("products")
+}
+
+model Category {
+  id         Int       @id @default(autoincrement())
+  name       String    @db.VarChar(100)
+  name_ar    String?   @db.VarChar(100)
+  slug       String    @unique @db.VarChar(100)
+  image      String?   @db.VarChar(255)
+  created_at DateTime  @default(now()) @db.Timestamp(0)
+  products   Product[]
+
+  @@map("categories")
 }
 
 model Recipe {
@@ -99,6 +144,7 @@ model Recipe {
   spices_used    String?  @db.Text
   cooking_time   String?  @db.VarChar(50)
   difficulty     String?  @db.VarChar(50)
+  content_json   String?  @db.Text
   created_at     DateTime @default(now()) @db.Timestamp(0)
 
   @@map("recipes")
@@ -132,6 +178,35 @@ model Blog {
   @@map("blogs")
 }
 
+model Bundle {
+  id             Int          @id @default(autoincrement())
+  name           String       @db.VarChar(255)
+  name_ar        String       @db.VarChar(255)
+  price          Decimal      @db.Decimal(10, 2)
+  description    String?      @db.Text
+  description_ar String?      @db.Text
+  image          String       @db.VarChar(255)
+  created_at     DateTime     @default(now()) @db.Timestamp(0)
+  updated_at     DateTime     @default(now()) @updatedAt @db.Timestamp(0)
+  items          BundleItem[]
+  order_items    OrderItem[]
+
+  @@map("bundles")
+}
+
+model BundleItem {
+  id         Int     @id @default(autoincrement())
+  bundle_id  Int
+  product_id Int
+  quantity   Int     @default(1)
+  bundle     Bundle  @relation(fields: [bundle_id], references: [id], onDelete: Cascade)
+  product    Product @relation(fields: [product_id], references: [id], onDelete: Cascade)
+
+  @@index([bundle_id], map: "bundle_id")
+  @@index([product_id], map: "product_id")
+  @@map("bundle_items")
+}
+
 enum ContactStatus {
   new
   read
@@ -146,10 +221,4 @@ enum OrderStatus {
   cancelled
 }
 
-enum ProductCategory {
-  spices
-  herbs
-  mixes
-  ground
-  whole
-}
+// Enum ProductCategory was removed in favor of Category model

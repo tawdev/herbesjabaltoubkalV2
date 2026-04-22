@@ -2,67 +2,92 @@ import Image from "next/image";
 import Link from "next/link";
 import { getRecipes } from "@/lib/api";
 import { getRecipeImage } from "@/lib/images";
+import { Metadata } from "next";
+import { FaUtensils, FaRegClock, FaArrowRightLong } from "react-icons/fa6";
+
+export const metadata: Metadata = {
+  title: "Alchemic Grimoire | Jabal Toubkal",
+  description: "Master the ancestral art of Moroccan cuisine. Discover our traditional recipes and botanical rituals from the High Atlas.",
+};
 
 export default async function RecipesPage() {
   const recipes = await getRecipes();
 
   return (
-    <div className="container mx-auto py-24 px-6 lg:px-8">
-      <div className="flex flex-col items-center gap-6 text-center mb-24">
-        <div className="flex flex-col gap-4">
-          <Link
-            href="/"
-            aria-label="Back to home page"
-            className="text-primary font-bold text-sm hover:underline flex items-center gap-2 justify-center mb-4 transition-all"
-          >
-            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2.5} stroke="currentColor" className="w-4 h-4">
-              <path strokeLinecap="round" strokeLinejoin="round" d="M10.5 19.5 3 12m0 0 7.5-7.5M3 12h18" />
-            </svg>
-            Back to Home
-          </Link>
-          <span className="text-foreground/70 font-black uppercase tracking-[0.4em] text-xs">Jabal Toubkal Kitchen</span>
-          <h1 className="text-5xl md:text-7xl font-bold tracking-tight">Moroccan Recipes</h1>
+    <div className="bg-background min-h-screen pb-32 animate-in fade-in duration-1000">
+      <div className="container mx-auto py-32 px-6 lg:px-20">
+        <header className="flex flex-col items-center gap-12 text-center mb-40">
+          <div className="space-y-4">
+            <div className="flex items-center justify-center gap-4 mb-2">
+               <div className="h-px w-12 bg-[#C5A059]/30" />
+               <span className="text-[10px] font-black uppercase tracking-[0.6em] text-[#C5A059]">The Alchemic Grimoire</span>
+               <div className="h-px w-12 bg-[#C5A059]/30" />
+            </div>
+            <h1 className="text-6xl md:text-8xl font-serif font-black tracking-tighter text-foreground leading-[0.85] uppercase">
+              Culinary <span className="text-[#C5A059]">Rituals</span>
+            </h1>
+          </div>
+          <p className="text-foreground/40 max-w-2xl text-xl font-serif italic leading-[1.8] border-l-2 border-[#C5A059]/20 pl-10 pr-10">
+            Transmit the knowledge of the ancestors through every blend. Master the art of Moroccan cuisine with our curated botanical transmissions.
+          </p>
+        </header>
+
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3 gap-x-12 gap-y-24">
+          {recipes.map((recipe: any) => (
+            <Link
+              key={recipe.id}
+              href={`/recipes/${recipe.id}`}
+              className="group flex flex-col bg-transparent relative hover:-translate-y-3 transition-all duration-700"
+            >
+              <div className="relative aspect-[4/5] overflow-hidden border border-[#C5A059]/10 bg-black shadow-2xl rounded-sm">
+                <Image
+                  src={getRecipeImage(recipe.image, recipe.title)}
+                  alt={recipe.title}
+                  fill
+                  unoptimized
+                  className="object-cover transition-transform duration-[3s] scale-105 group-hover:scale-125 grayscale-[0.3] group-hover:grayscale-0"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent opacity-60 group-hover:opacity-40 transition-opacity duration-700" />
+                
+                <div className="absolute top-8 right-0 translate-x-4 group-hover:translate-x-0 transition-transform duration-700">
+                   <div className="border border-[#C5A059]/20 bg-background/90 backdrop-blur-xl px-6 py-4 text-[10px] font-black uppercase tracking-[0.3em] text-[#C5A059] shadow-2xl flex items-center gap-3">
+                      <FaRegClock size={12} />
+                      {recipe.cooking_time}
+                   </div>
+                </div>
+
+                <div className="absolute bottom-10 left-10 right-10 space-y-6">
+                    <div className="flex items-center gap-3 text-[#C5A059] opacity-0 group-hover:opacity-100 translate-y-4 group-hover:translate-y-0 transition-all duration-700">
+                       <FaUtensils size={14} />
+                       <span className="text-[9px] font-black uppercase tracking-[0.4em]">{recipe.difficulty || 'Ancestral'}</span>
+                    </div>
+                </div>
+              </div>
+
+              <div className="flex flex-col pt-10 space-y-6">
+                <div className="space-y-4 flex-1">
+                  <h3 className="text-3xl font-serif text-foreground font-black uppercase tracking-tighter leading-none group-hover:text-[#C5A059] transition-colors duration-500 min-h-[60px]">
+                    {recipe.title}
+                  </h3>
+                  <div className="max-w-xs">
+                    <p className="text-foreground/40 line-clamp-2 text-base leading-relaxed font-serif italic border-l-2 border-[#C5A059]/10 pl-6 group-hover:border-[#C5A059]/40 transition-colors">
+                      {recipe.description}
+                    </p>
+                  </div>
+                </div>
+                
+                <div className="flex items-center gap-6 pt-6 border-t border-[#C5A059]/10">
+                  <span className="text-[10px] font-black uppercase tracking-[0.5em] text-[#C5A059] group-hover:text-foreground transition-all">Summon Recipe</span>
+                  <FaArrowRightLong className="text-[#C5A059]/40 group-hover:text-foreground group-hover:translate-x-4 transition-all duration-500" size={16} />
+                </div>
+                
+                <div className="absolute top-0 right-0 -translate-y-16 text-[150px] font-serif italic text-[#C5A059]/5 pointer-events-none select-none group-hover:text-[#C5A059]/10 transition-colors">
+                   {recipe.id.toString().padStart(2, '0')}
+                </div>
+              </div>
+            </Link>
+          ))}
         </div>
-        <p className="text-foreground/80 max-w-2xl text-lg text-pretty italic font-semibold font-serif">
-          Master the art of Moroccan cuisine with our curated collection of traditional and modern recipes featuring the finest Atlas herbs.
-        </p>
-      </div>
-
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">
-        {recipes.map((recipe: any) => (
-          <Link
-            key={recipe.id}
-            href={`/recipes/${recipe.id}`}
-            aria-label={`View recipe for ${recipe.title}`}
-            className="group flex flex-col gap-6 overflow-hidden rounded-[2.5rem] bg-white border border-secondary/50 transition-all hover:shadow-2xl hover:-translate-y-2"
-          >
-            <div className="relative aspect-[4/3] overflow-hidden">
-              <Image
-                src={getRecipeImage(recipe.image, recipe.title)}
-                alt={recipe.title}
-                fill
-                unoptimized
-                className="object-cover transition-transform duration-700 group-hover:scale-110"
-              />
-              <div className="absolute top-6 right-6 rounded-full bg-white/95 backdrop-blur-sm px-4 py-2 text-xs font-bold shadow-lg flex items-center gap-2">
-                <span className="text-lg">⏱️</span> {recipe.cooking_time}
-              </div>
-            </div>
-
-            <div className="flex flex-col gap-4 p-8 pt-2">
-              <div className="flex flex-col gap-1">
-                <h3 className="text-2xl font-bold group-hover:text-primary transition-colors">{recipe.title}</h3>
-              </div>
-              <p className="text-foreground/80 line-clamp-2 text-sm leading-relaxed italic font-semibold font-serif">
-                {recipe.description}
-              </p>
-              <div className="flex items-center gap-4 mt-4 pt-6 border-t border-secondary/50">
-                <span className="text-xs font-black uppercase tracking-widest text-primary group-hover:tracking-[0.2em] transition-all">View Recipe</span>
-                <div className="h-0.5 w-8 bg-primary/20 group-hover:w-16 transition-all" />
-              </div>
-            </div>
-          </Link>
-        ))}
       </div>
     </div>
   );

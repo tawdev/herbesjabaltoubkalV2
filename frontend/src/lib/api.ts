@@ -42,7 +42,10 @@ export async function getRecipe(id: string) {
     cache: "no-store",
   });
 
-  if (!res.ok) throw new Error("Failed to fetch recipe");
+  if (!res.ok) {
+    const errorText = await res.text().catch(() => 'no body');
+    throw new Error(`Failed to fetch recipe (Status ${res.status}): ${errorText}`);
+  }
   return res.json();
 }
 
@@ -68,12 +71,18 @@ export async function getOrders(token?: string) {
   const headers: any = {};
   if (token) headers["Authorization"] = `Bearer ${token}`;
 
+  console.log(`[API] Fetching orders from: ${API_URL}/orders`);
+  
   const res = await fetch(`${API_URL}/orders`, {
     headers,
     cache: "no-store",
   });
 
-  if (!res.ok) throw new Error("Failed to fetch orders");
+  if (!res.ok) {
+    const errorText = await res.text().catch(() => 'No error body');
+    console.error(`[API] getOrders fail: ${res.status} ${errorText}`);
+    throw new Error(`Failed to fetch orders: ${res.status} ${errorText}`);
+  }
   return res.json();
 }
 
@@ -87,5 +96,34 @@ export async function getContacts(token?: string) {
   });
 
   if (!res.ok) throw new Error("Failed to fetch contacts");
+  return res.json();
+}
+
+export async function getBundles() {
+  const res = await fetch(`${API_URL}/bundles`, {
+    cache: "no-store",
+  });
+  if (!res.ok) throw new Error("Failed to fetch bundles");
+  return res.json();
+}
+
+export async function getBundle(id: string) {
+  const res = await fetch(`${API_URL}/bundles/${id}`, {
+    cache: "no-store",
+  });
+  if (!res.ok) throw new Error("Failed to fetch bundle");
+  return res.json();
+}
+
+export async function getUsers(token?: string) {
+  const headers: any = {};
+  if (token) headers["Authorization"] = `Bearer ${token}`;
+
+  const res = await fetch(`${API_URL}/users`, {
+    headers,
+    cache: "no-store",
+  });
+
+  if (!res.ok) throw new Error("Failed to fetch users");
   return res.json();
 }

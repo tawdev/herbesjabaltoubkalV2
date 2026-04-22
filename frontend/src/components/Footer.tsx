@@ -1,93 +1,112 @@
-"use client";
-
 import Link from "next/link";
 import Image from "next/image";
-import { usePathname } from "next/navigation";
-import { FaInstagram, FaFacebookF, FaXTwitter } from "react-icons/fa6";
+import { FaInstagram, FaFacebookF, FaWhatsapp, FaEnvelope, FaLocationDot, FaPhone, FaArrowUpLong } from "react-icons/fa6";
 
 export default function Footer() {
-  const pathname = usePathname();
-
-  const handleHomeClick = (e: React.MouseEvent) => {
-    if (pathname === "/") {
-      e.preventDefault();
-      window.scrollTo({ top: 0, behavior: "smooth" });
-    }
+  const scrollToTop = () => {
+    window.scrollTo({ top: 0, behavior: "smooth" });
   };
 
   return (
-    <footer className="border-t bg-secondary/20 py-24 mt-24">
-      <div className="container mx-auto px-6 lg:px-8 grid gap-16 md:grid-cols-4">
-        <div className="col-span-1 md:col-span-2 space-y-8">
-          <Link 
-            href="/" 
-            onClick={handleHomeClick}
-            className="flex flex-col gap-1 hover:opacity-90 transition-all"
-          >
-            <Image 
-              src="/images/logo/20251202_105020 (1).png"
-              alt="Herbes Jabal Toubkal Logo"
-              width={180}
-              height={54}
-              quality={80}
-              className="h-14 w-auto object-contain brightness-110"
-            />
-            <span className="text-[10px] font-black uppercase tracking-[0.3em] text-slate-600 mt-2">Pure Atlas Botanicals</span>
-          </Link>
-          <p className="max-w-md text-base text-foreground/70 leading-relaxed font-medium">
-            Sourcing the finest aromatic treasures from the High Atlas. 
-            We bring ethically harvested, naturally sun-dried herbs and 
-            premium spices straight from Morocco to your kitchen.
-          </p>
-          <div className="flex gap-5">
-            {[
-              { name: "Instagram", icon: <FaInstagram size={18} />, href: "https://instagram.com" },
-              { name: "Facebook", icon: <FaFacebookF size={18} />, href: "https://facebook.com" },
-              { name: "Twitter", icon: <FaXTwitter size={18} />, href: "https://twitter.com" }
-            ].map((social) => (
-              <a 
-                key={social.name}
-                href={social.href}
-                target="_blank"
-                rel="noopener noreferrer"
-                aria-label={`Follow us on ${social.name}`}
-                className="w-11 h-11 rounded-full bg-white flex items-center justify-center shadow-sm cursor-pointer hover:bg-primary/10 hover:border-primary/50 transition-all border border-secondary text-primary"
-              >
-                {social.icon}
-              </a>
-            ))}
+    <footer className="bg-background border-t border-[#C5A059]/10 pt-32 pb-20 relative overflow-hidden">
+      {/* Decorative Background Text */}
+      <div className="absolute top-20 left-0 right-0 text-center text-[250px] font-serif italic text-foreground/[0.01] pointer-events-none select-none">
+        Toubkal
+      </div>
+
+      <div className="container mx-auto px-6 lg:px-20 relative z-10">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-16 lg:gap-24 mb-32">
+          {/* Brand Identity Column */}
+          <div className="lg:col-span-5 space-y-12">
+            <Link href="/" className="inline-block transform hover:scale-105 transition-transform duration-500">
+               <div className="relative h-32 w-32">
+                <Image
+                  src="/images/logo/luxury_logo_transparent.png"
+                  alt="Herbes Jabal Toubkal"
+                  fill
+                  className="object-contain"
+                />
+              </div>
+            </Link>
+            <div className="max-w-md space-y-8">
+               <p className="text-xl font-serif italic text-foreground/40 leading-relaxed">
+                 &quot;Harvesting the soul of the High Atlas. We transmit the ancestral wisdom of Moroccan botanicals to the modern world, one ritual at a time.&quot;
+               </p>
+               <div className="flex gap-8">
+                  {[
+                    { icon: <FaInstagram size={18} />, href: "#" },
+                    { icon: <FaFacebookF size={18} />, href: "#" },
+                    { icon: <FaWhatsapp size={18} />, href: "#" },
+                  ].map((social, i) => (
+                    <a key={i} href={social.href} className="w-12 h-12 border border-[#C5A059]/20 flex items-center justify-center text-[#C5A059]/40 hover:text-[#C5A059] hover:border-[#C5A059] transition-all rounded-sm">
+                       {social.icon}
+                    </a>
+                  ))}
+               </div>
+            </div>
+          </div>
+
+          {/* Navigation Links Grid */}
+          <div className="lg:col-span-7 grid grid-cols-2 md:grid-cols-3 gap-12">
+            <div className="space-y-10">
+               <h4 className="text-xs font-black uppercase tracking-[0.4em] text-[#C5A059]">The Sanctuary</h4>
+               <nav className="flex flex-col gap-6">
+                 {['Home', 'Catalog', 'Ritual Packs', 'Recipes', 'Manuscrits'].map((item) => (
+                    <Link key={item} href={`/${item.toLowerCase() === 'home' ? '' : item.toLowerCase() === 'manuscrits' ? 'blog' : item.toLowerCase() === 'ritual packs' ? 'bundles' : item.toLowerCase()}`} className="text-sm font-bold uppercase tracking-widest text-foreground/40 hover:text-[#C5A059] transition-colors">{item}</Link>
+                 ))}
+               </nav>
+            </div>
+            
+            <div className="space-y-10">
+               <h4 className="text-xs font-black uppercase tracking-[0.4em] text-[#C5A059]">Assistance</h4>
+               <nav className="flex flex-col gap-6">
+                 {['Contact', 'Shipping', 'Terms', 'Privacy'].map((item) => (
+                    <Link key={item} href={`/${item.toLowerCase()}`} className="text-sm font-bold uppercase tracking-widest text-foreground/40 hover:text-[#C5A059] transition-colors">{item}</Link>
+                 ))}
+               </nav>
+            </div>
+
+            <div className="space-y-10 col-span-2 md:col-span-1">
+               <h4 className="text-xs font-black uppercase tracking-[0.4em] text-[#C5A059]">Dispatch Center</h4>
+               <div className="flex flex-col gap-8">
+                  <div className="flex items-start gap-4 text-foreground/50 text-sm font-serif italic">
+                     <FaLocationDot size={16} className="mt-1 text-[#C5A059]/40" />
+                     <p>High Atlas Mountains,<br />Marrakech Region, Morocco</p>
+                  </div>
+                  <div className="flex items-center gap-4 text-foreground/50 text-sm tracking-widest">
+                     <FaPhone size={16} className="text-[#C5A059]/40" />
+                     <p>+212 (0) 6XX XXX XXX</p>
+                  </div>
+                  <div className="flex items-center gap-4 text-foreground/50 text-sm tracking-widest group">
+                     <FaEnvelope size={16} className="text-[#C5A059]/40" />
+                     <p className="group-hover:text-[#C5A059] transition-colors">essence@jabaltoubkal.com</p>
+                  </div>
+               </div>
+            </div>
           </div>
         </div>
-        <div>
-          <h3 className="text-xl mb-8 italic">Discover</h3>
-          <ul className="space-y-5 text-sm font-bold text-foreground/80">
-            <li><a href="/products" className="hover:text-primary transition-colors">Aromatic Spices</a></li>
-            <li><a href="/recipes" className="hover:text-primary transition-colors">Culinary Recipes</a></li>
-            <li><a href="/about" className="hover:text-primary transition-colors">Our Story</a></li>
-            <li><a href="/shipping" className="hover:text-primary transition-colors">Shipping Info</a></li>
-          </ul>
-        </div>
-        <div>
-          <h3 className="text-xl mb-8 italic">Support</h3>
-          <ul className="space-y-5 text-sm font-bold text-foreground/80">
-            <li className="flex flex-col gap-1">
-              <span className="text-[10px] uppercase tracking-widest text-slate-700 font-black">Email Us</span>
-              <span className="hover:text-primary transition-colors cursor-pointer text-slate-800">contact@herbesjabaltoubkal.com</span>
-            </li>
-            <li className="flex flex-col gap-1">
-              <span className="text-[10px] uppercase tracking-widest text-slate-700 font-black">Call Us</span>
-              <span className="hover:text-primary transition-colors cursor-pointer text-slate-800">+212 524308038</span>
-            </li>
-            <li className="text-slate-800 font-semibold">Live Chat: 9AM - 6PM</li>
-            <li className="text-slate-800 font-semibold">FAQ Center</li>
-          </ul>
-        </div>
-      </div>
-      <div className="container mx-auto px-6 lg:px-8 mt-24 border-t border-border/40 pt-12 flex flex-col md:flex-row justify-between items-center gap-8 text-xs text-foreground/70 font-bold tracking-wide">
-        <p>© 2026 <a href="https://cdigital.ma/" target="_blank" rel="noopener noreferrer" className="text-primary hover:brightness-110 transition-all">cdigital</a>. Authentic Moroccan Heritage.</p>
-        <div className="flex gap-10">
-          <a href="/privacy" className="hover:text-foreground transition-all">Privacy Policy</a>
-          <a href="/terms" className="hover:text-foreground transition-all">Terms of Service</a>
+
+        {/* Bottom Bar */}
+        <div className="pt-20 border-t border-[#C5A059]/10 flex flex-col md:flex-row items-center justify-between gap-12">
+           <div className="flex flex-col md:flex-row items-center gap-8 md:gap-16">
+              <span className="text-[11px] font-black uppercase tracking-[0.3em] text-foreground/40 italic">
+                © {new Date().getFullYear()} Jabal Toubkal. Ancestral Heritage Authenticated.
+              </span>
+              <div className="flex gap-8">
+                 <span className="text-[11px] font-black uppercase tracking-widest text-foreground/30">Currency: MAD</span>
+                 <span className="text-[11px] font-black uppercase tracking-widest text-foreground/30">Region: MENA</span>
+              </div>
+           </div>
+
+           <button 
+              onClick={scrollToTop}
+              className="flex items-center gap-4 group text-xs font-black uppercase tracking-[0.3em] text-[#C5A059] hover:text-foreground transition-all"
+           >
+              Elevation Ritual
+              <div className="w-10 h-10 border border-[#C5A059]/20 flex items-center justify-center group-hover:bg-[#C5A059] group-hover:text-black transition-all">
+                 <FaArrowUpLong size={12} className="group-hover:-translate-y-2 transition-transform duration-500" />
+              </div>
+           </button>
         </div>
       </div>
     </footer>

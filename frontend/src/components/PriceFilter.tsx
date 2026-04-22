@@ -31,10 +31,10 @@ export default function PriceFilter({ maxPossiblePrice = 200 }: { maxPossiblePri
   };
 
   return (
-    <div className="flex flex-col gap-4">
+    <div className="flex flex-col gap-6">
       <input 
         type="range" 
-        className="accent-primary" 
+        className="accent-[#C5A059] h-1 bg-[#C5A059]/10 rounded-lg appearance-none cursor-pointer" 
         min="0" 
         max={maxPossiblePrice}
         value={value}
@@ -42,9 +42,9 @@ export default function PriceFilter({ maxPossiblePrice = 200 }: { maxPossiblePri
         onMouseUp={applyFilter}
         onTouchEnd={applyFilter}
       />
-      <div className="flex justify-between text-xs font-black text-foreground/40 uppercase">
+      <div className="flex justify-between text-[9px] font-bold text-foreground/40 uppercase tracking-[0.2em]">
         <span>0 MAD</span>
-        <span>{value} MAD</span>
+        <span className="text-[#C5A059]">{value} MAD</span>
       </div>
     </div>
   );
