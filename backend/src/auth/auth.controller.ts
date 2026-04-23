@@ -60,8 +60,13 @@ export class AuthController {
   async googleAuthRedirect(@Req() req: any, @Res() res: Response) {
     const { access_token, user } = await this.authService.googleLogin(req);
     // Redirect to frontend with token
-    const frontendUrl = process.env.FRONTEND_URL || 'http://localhost:3000';
-    return res.redirect(`${frontendUrl}/login?token=${access_token}&user=${JSON.stringify(user)}`);
+    const frontendUrl = process.env.FRONTEND_URL;
+    if (!frontendUrl) {
+      console.error('ERROR: FRONTEND_URL environment variable is missing!');
+      // In production, we MUST have this. If missing, we fallback to a safe default or log error.
+    }
+    const targetUrl = frontendUrl || 'http://localhost:3000';
+    return res.redirect(`${targetUrl}/login?token=${access_token}&user=${JSON.stringify(user)}`);
   }
 
   @Get('profile')
