@@ -85,11 +85,7 @@ export default function BlogPage() {
                        <div className="h-px w-20 bg-[#C5A059]/30" />
                     </div>
 
-                    <div className="absolute bottom-12 left-12 right-12 space-y-4">
-                       <p className="text-4xl font-serif font-black text-foreground uppercase tracking-tighter leading-none italic opacity-30">
-                         {blogs[currentIndex].title_ar}
-                       </p>
-                    </div>
+                    
                  </div>
 
                  {/* Right Page (Content) */}

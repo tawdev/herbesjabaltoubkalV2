@@ -96,18 +96,18 @@ export default function ProductCard({ product }: ProductCardProps) {
         </div>
 
         {/* Information Manifest */}
-        <div className="flex flex-col items-center text-center px-4 space-y-4">
-          <div className="space-y-1">
-             <span className="text-[9px] font-black uppercase tracking-[0.4em] text-[#C5A059]/40">
+        <div className="flex flex-col items-center text-center px-4 space-y-4 flex-1">
+          <div className="space-y-1 w-full">
+             <span className="text-[9px] font-black uppercase tracking-[0.4em] text-[#C5A059]/40 block line-clamp-1 min-h-[1em]">
                {typeof product.category === 'object' ? product.category.name : product.category}
              </span>
-             <h3 className="font-serif text-2xl font-black tracking-tight text-foreground group-hover:text-[#C5A059] transition-colors uppercase leading-none">
+             <h3 className="font-serif text-2xl font-black tracking-tight text-foreground group-hover:text-[#C5A059] transition-colors uppercase leading-tight line-clamp-2 min-h-[3.5rem] flex items-center justify-center">
                {product.name}
              </h3>
           </div>
           
-          <div className="flex flex-col items-center gap-6 w-full">
-             <div className="flex flex-col items-center">
+          <div className="flex flex-col items-center gap-6 w-full mt-auto">
+             <div className="flex flex-col items-center min-h-[2.5rem] justify-center">
                 {product.promo_price ? (
                   <div className="flex items-baseline gap-4">
                     <span className="text-xl font-serif font-black text-[#C5A059] tabular-nums">{parseFloat(product.promo_price).toLocaleString()} MAD</span>
@@ -123,7 +123,7 @@ export default function ProductCard({ product }: ProductCardProps) {
                className="w-full min-w-[180px] py-4 border border-[#C5A059]/20 text-[10px] font-black uppercase tracking-[0.4em] text-foreground/40 hover:text-black hover:bg-[#C5A059] hover:border-[#C5A059] transition-all flex items-center justify-center gap-4 bg-transparent shadow-xl rounded-sm group/btn relative z-10"
              >
                <FaBagShopping size={14} className="group-hover/btn:scale-110 transition-transform" />
-               Adjoin to Cart
+               Ajouter au panier
              </button>
           </div>
         </div>
@@ -200,7 +200,7 @@ export default function ProductCard({ product }: ProductCardProps) {
                      className="w-full bg-[#C5A059] text-black text-[12px] font-black uppercase tracking-[0.5em] py-5 transition-all hover:bg-white shadow-xl flex items-center justify-center gap-4"
                    >
                      <FaBagShopping size={18} />
-                     Confirm & Adjoin
+                     Confirmer & Ajouter
                    </button>
                 </div>
              </div>

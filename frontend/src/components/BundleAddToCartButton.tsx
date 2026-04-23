@@ -41,7 +41,7 @@ export default function BundleAddToCartButton({ bundle }: BundleAddToCartButtonP
         <path d="M3 6h18" />
         <path d="M16 10a4 4 0 0 1-8 0" />
       </svg>
-      Obtain Ritual
+      Ajouter au panier
     </button>
   );
 }

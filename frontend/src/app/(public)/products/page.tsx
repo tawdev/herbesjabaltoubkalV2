@@ -23,15 +23,29 @@ export default async function ProductsPage({
             </div>
             
             <div className="space-y-8">
-              <h3 className="text-[10px] font-bold uppercase tracking-[0.4em] text-foreground/20">Collections</h3>
+              <div className="flex items-center justify-between">
+                <h3 className="text-[10px] font-bold uppercase tracking-[0.4em] text-foreground/20">Collections</h3>
+                {(params.category || params.maxPrice) && (
+                  <a 
+                    href="/products" 
+                    className="text-[9px] font-bold uppercase tracking-[0.2em] text-[#C5A059] hover:opacity-70 transition-opacity"
+                  >
+                    Clear All
+                  </a>
+                )}
+              </div>
               <div className="flex flex-col gap-2">
-                {["Spices", "Herbs", "Mixes", "Ground", "Whole"].map((cat) => {
+                {["All", "Spices", "Herbs", "Mixes", "Ground", "Whole"].map((cat) => {
                   const searchP = new URLSearchParams();
                   Object.entries(params).forEach(([k, v]) => {
-                    if (v) searchP.set(k, String(v));
+                    if (v && k !== "category") searchP.set(k, String(v));
                   });
-                  searchP.set("category", cat.toLowerCase());
-                  const isActive = params.category === cat.toLowerCase();
+                  
+                  if (cat !== "All") {
+                    searchP.set("category", cat.toLowerCase());
+                  }
+                  
+                  const isActive = cat === "All" ? !params.category : params.category === cat.toLowerCase();
                   
                   return (
                     <a
@@ -39,7 +53,7 @@ export default async function ProductsPage({
                       href={`/products?${searchP.toString()}`}
                       className={`text-[11px] font-bold uppercase tracking-[0.2em] py-3 flex items-center justify-between group transition-all ${isActive ? 'text-[#C5A059]' : 'text-foreground/40 hover:text-[#C5A059]'}`}
                     >
-                      {cat}
+                      {cat === "All" ? "All Products" : cat}
                       <div className={`h-[1px] bg-[#C5A059] transition-all duration-500 ${isActive ? 'w-8' : 'w-0 group-hover:w-4'}`} />
                     </a>
                   );
@@ -53,6 +67,18 @@ export default async function ProductsPage({
                 <PriceFilter maxPossiblePrice={200} />
               </div>
             </div>
+
+            {(params.category || params.maxPrice) && (
+              <div className="pt-8 border-t border-[#C5A059]/5">
+                <a 
+                  href="/products" 
+                  className="w-full py-4 border border-[#C5A059]/20 text-[10px] font-bold uppercase tracking-[0.4em] text-[#C5A059] hover:bg-[#C5A059] hover:text-white transition-all duration-300 flex items-center justify-center gap-3 group"
+                >
+                  <span className="w-4 h-[1px] bg-[#C5A059] group-hover:bg-white transition-colors"></span>
+                  Clear Filters
+                </a>
+              </div>
+            )}
           </aside>
 
           {/* Product Grid Area */}

@@ -3,8 +3,10 @@
 import { motion } from "framer-motion";
 import { useState } from "react";
 import { API_URL } from "@/lib/api";
+import { useAuth } from "@/context/AuthContext";
 
 export default function ContactPage() {
+  const { user } = useAuth();
   const [loading, setLoading] = useState(false);
   const [success, setSuccess] = useState(false);
 
@@ -133,6 +135,8 @@ export default function ContactPage() {
                   <input
                     name="name"
                     required
+                    autoComplete="name"
+                    defaultValue={user?.username || ""}
                     className="w-full bg-transparent border-b border-[#C5A059]/20 py-4 text-[#C5A059] focus:border-[#C5A059] outline-none transition-all font-serif italic text-lg"
                     placeholder="Inscribe your name"
                   />
@@ -143,6 +147,8 @@ export default function ContactPage() {
                     name="email"
                     type="email"
                     required
+                    autoComplete="email"
+                    defaultValue={user?.email || ""}
                     className="w-full bg-transparent border-b border-[#C5A059]/20 py-4 text-[#C5A059] focus:border-[#C5A059] outline-none transition-all font-serif italic text-lg"
                     placeholder="Your digital scroll"
                   />

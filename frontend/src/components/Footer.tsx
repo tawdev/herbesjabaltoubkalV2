@@ -52,7 +52,7 @@ export default function Footer() {
               <h4 className="text-[15px] font-black uppercase tracking-[0.4em] text-[#C5A059]">The Sanctuary</h4>
               <nav className="flex flex-col gap-6">
                 {['Home', 'Catalog', 'Ritual Packs', 'Recipes', 'Manuscrits'].map((item) => (
-                  <Link key={item} href={`/${item.toLowerCase() === 'home' ? '' : item.toLowerCase() === 'manuscrits' ? 'blog' : item.toLowerCase() === 'ritual packs' ? 'bundles' : item.toLowerCase()}`} className="text-sm font-bold uppercase tracking-[0.2em] text-foreground/40 hover:text-[#C5A059] transition-colors">{item}</Link>
+                  <Link key={item} href={`/${item.toLowerCase() === 'home' ? '' : item.toLowerCase() === 'catalog' ? 'products' : item.toLowerCase() === 'manuscrits' ? 'blog' : item.toLowerCase() === 'ritual packs' ? 'bundles' : item.toLowerCase()}`} className="text-sm font-bold uppercase tracking-[0.2em] text-foreground/40 hover:text-[#C5A059] transition-colors">{item}</Link>
                 ))}
               </nav>
             </div>

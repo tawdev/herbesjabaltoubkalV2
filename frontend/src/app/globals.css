@@ -58,6 +58,11 @@
     @apply bg-background text-foreground font-sans;
     font-feature-settings: "rlig" 1, "calt" 1;
     -webkit-font-smoothing: antialiased;
+    cursor: auto !important;
+  }
+
+  html {
+    cursor: auto !important;
   }
 
   h1, h2, h3, h4, h5, h6 {

@@ -5,6 +5,7 @@ import { getRecipeImage, getBlogImage, getBundleImage } from "@/lib/images";
 import { FaArrowRightLong, FaLocationDot, FaLeaf, FaScroll } from "react-icons/fa6";
 import ProductCard from "@/components/ProductCard";
 import BundleAddToCartButton from "@/components/BundleAddToCartButton";
+import NewsletterSection from "@/components/NewsletterSection";
 
 export default async function Home() {
   let bestSellers: any[] = [];
@@ -82,13 +83,19 @@ export default async function Home() {
       <section className="py-48 container mx-auto px-6 lg:px-20 relative">
         <div className="absolute top-0 left-1/2 -translate-x-1/2 -translate-y-1/2 text-[200px] font-serif italic text-foreground/[0.02] pointer-events-none select-none">Rituals</div>
         
-        <div className="flex flex-col items-center text-center mb-32 space-y-6">
-          <div className="flex items-center gap-4">
-             <div className="h-0.5 w-12 bg-[#C5A059]" />
-             <span className="text-[10px] font-black uppercase tracking-[0.6em] text-[#C5A059]">Curated Collections</span>
+        <div className="flex flex-col md:flex-row md:items-end justify-between mb-32 gap-10">
+          <div className="space-y-6">
+             <div className="flex items-center gap-4">
+                <div className="h-0.5 w-12 bg-[#C5A059]" />
+                <span className="text-[10px] font-black uppercase tracking-[0.6em] text-[#C5A059]">Curated Collections</span>
+             </div>
+             <h2 className="text-5xl md:text-7xl font-serif text-foreground font-black uppercase tracking-tight">Ajouter au <span className="italic text-[#C5A059]">Panier</span></h2>
+             <p className="text-foreground/40 max-w-xl font-serif italic text-lg leading-relaxed italic">Complete experiences designed for the modern alchemist.</p>
           </div>
-          <h2 className="text-5xl md:text-7xl font-serif text-foreground font-black uppercase tracking-tight">Le Parcours <span className="italic text-[#C5A059]">Rituel</span></h2>
-          <p className="text-foreground/40 max-w-xl font-serif italic text-lg leading-relaxed pt-4 italic">Complete experiences designed for the modern alchemist.</p>
+          <Link href="/bundles" className="group flex items-center gap-6 text-[10px] font-black uppercase tracking-[0.4em] text-[#C5A059] pb-4 border-b border-[#C5A059]/20 hover:border-[#C5A059] transition-all">
+             The Full Archives
+             <FaArrowRightLong className="group-hover:translate-x-4 transition-transform" />
+          </Link>
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-20 max-w-[1400px] mx-auto">
@@ -108,15 +115,15 @@ export default async function Home() {
                    <BundleAddToCartButton bundle={bundle} />
                 </div>
               </div>
-              <div className="flex flex-col text-center space-y-4 px-6">
+              <div className="flex flex-col text-center space-y-4 px-6 flex-1">
                 <div className="space-y-1">
-                   <span className="text-[9px] font-black uppercase tracking-[0.4em] text-[#C5A059]/50 italic">Atlas Collection</span>
-                   <h3 className="text-3xl font-serif text-foreground font-black uppercase tracking-tighter group-hover:text-[#C5A059] transition-colors">{bundle.name}</h3>
+                   <span className="text-[9px] font-black uppercase tracking-[0.4em] text-[#C5A059]/50 italic block min-h-[1.5em]">Atlas Collection</span>
+                   <h3 className="text-3xl font-serif text-foreground font-black uppercase tracking-tighter group-hover:text-[#C5A059] transition-colors line-clamp-1 min-h-[1.5em] flex items-center justify-center">{bundle.name}</h3>
                 </div>
-                <p className="text-base text-foreground/40 font-serif italic leading-relaxed line-clamp-2">
+                <p className="text-base text-foreground/40 font-serif italic leading-relaxed line-clamp-2 min-h-[3rem]">
                   {bundle.description}
                 </p>
-                <div className="text-2xl font-serif font-black text-[#C5A059] pt-4 tabular-nums">{parseFloat(bundle.price).toLocaleString()} MAD</div>
+                <div className="text-2xl font-serif font-black text-[#C5A059] pt-4 tabular-nums mt-auto">{parseFloat(bundle.price).toLocaleString()} MAD</div>
               </div>
             </Link>
           )) : (
@@ -124,6 +131,13 @@ export default async function Home() {
               <span className="font-serif italic text-2xl text-foreground/20 uppercase tracking-widest">Gathering the elements for new rituels...</span>
             </div>
           )}
+        </div>
+
+        <div className="mt-24 flex justify-center">
+          <Link href="/bundles" className="group relative border border-[#C5A059]/30 px-16 py-6 text-[10px] font-black uppercase tracking-[0.5em] text-[#C5A059] transition-all hover:bg-[#C5A059] hover:text-black flex items-center gap-6 shadow-2xl rounded-sm">
+            Discover the Full Grimoire
+            <FaArrowRightLong className="group-hover:translate-x-4 transition-transform" />
+          </Link>
         </div>
       </section>
 
@@ -192,9 +206,15 @@ export default async function Home() {
       {/* 🟣 The Chronicles - Recent Journal Entries */}
       <section className="py-48 bg-black/20">
          <div className="container mx-auto px-6 lg:px-20">
-            <div className="text-center mb-32 space-y-6">
-               <span className="text-[10px] font-black uppercase tracking-[0.6em] text-[#C5A059]">Recent Transmissions</span>
-               <h2 className="text-5xl md:text-7xl font-serif text-foreground font-black uppercase tracking-tighter">The Alchemic <span className="italic text-[#C5A059]">Journal</span></h2>
+            <div className="flex flex-col md:flex-row md:items-end justify-between mb-32 gap-10">
+               <div className="space-y-6">
+                  <span className="text-[10px] font-black uppercase tracking-[0.6em] text-[#C5A059]">Recent Transmissions</span>
+                  <h2 className="text-5xl md:text-7xl font-serif text-foreground font-black uppercase tracking-tighter">The Alchemic <span className="italic text-[#C5A059]">Journal</span></h2>
+               </div>
+               <Link href="/blog" className="group flex items-center gap-6 text-[10px] font-black uppercase tracking-[0.4em] text-[#C5A059] pb-4 border-b border-[#C5A059]/20 hover:border-[#C5A059] transition-all">
+                  The Complete Chronicles
+                  <FaArrowRightLong className="group-hover:translate-x-4 transition-transform" />
+               </Link>
             </div>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-16">
                {blogs.map((blog) => (
@@ -205,9 +225,9 @@ export default async function Home() {
                            {new Date(blog.created_at).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}
                         </div>
                      </div>
-                     <div className="space-y-4">
-                        <h4 className="text-3xl font-serif text-foreground uppercase font-black tracking-tight group-hover:text-[#C5A059] transition-colors leading-none">{blog.title}</h4>
-                        <p className="text-base text-foreground/40 font-serif italic line-clamp-2 leading-relaxed">{blog.excerpt}</p>
+                     <div className="space-y-4 flex-1 flex flex-col">
+                        <h4 className="text-3xl font-serif text-foreground uppercase font-black tracking-tight group-hover:text-[#C5A059] transition-colors leading-tight line-clamp-2 min-h-[4.5rem] flex items-center justify-center text-center">{blog.title}</h4>
+                        <p className="text-base text-foreground/40 font-serif italic line-clamp-2 leading-relaxed min-h-[3rem] text-center mt-auto">{blog.excerpt}</p>
                      </div>
                   </Link>
                ))}
@@ -216,25 +236,7 @@ export default async function Home() {
       </section>
 
       {/* 📧 Subscription Ritual */}
-      <section className="py-48 relative overflow-hidden">
-        <div className="container mx-auto px-6 lg:px-20 max-w-5xl text-center flex flex-col items-center gap-16">
-          <div className="space-y-4">
-             <span className="text-[10px] font-black uppercase tracking-[0.6em] text-[#C5A059]">Join the Circle</span>
-             <h3 className="text-5xl md:text-8xl font-serif text-foreground font-black uppercase tracking-tighter">Become a <span className="italic text-[#C5A059]">Chronicler</span></h3>
-          </div>
-          <p className="text-xl text-foreground/50 font-serif italic max-w-xl">Register to receive our secret transmissions, limited harvest alerts, and alchemic guides.</p>
-          <div className="w-full max-w-3xl flex flex-col items-center gap-10">
-            <input 
-              type="email" 
-              placeholder="YOUR SACRED EMAIL ADRESS" 
-              className="w-full bg-transparent border-b border-[#C5A059]/20 py-8 text-2xl font-serif text-foreground text-center focus:outline-none focus:border-[#C5A059] transition-all placeholder:text-foreground/5 uppercase tracking-widest"
-            />
-            <button className="px-24 py-8 bg-[#C5A059] text-black text-[11px] font-black uppercase tracking-[0.5em] hover:bg-white transition-all shadow-2xl rounded-sm">Initiate Membership</button>
-          </div>
-        </div>
-        {/* Background Decorative */}
-        <div className="absolute top-1/2 left-0 -translate-x-1/2 -translate-y-1/2 text-[300px] font-serif italic text-foreground/[0.01] pointer-events-none select-none">Newsletter</div>
-      </section>
+      <NewsletterSection />
     </div>
   );
 }

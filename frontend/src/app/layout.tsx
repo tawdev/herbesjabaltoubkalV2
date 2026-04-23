@@ -49,7 +49,6 @@ export const metadata: Metadata = {
 };
 
 import { SoundProvider } from "@/context/SoundContext";
-import CustomCursor from "@/components/CustomCursor";
 import PageTransition from "@/components/PageTransition";
 import LuxuryBackground from "@/components/LuxuryBackground";
 import ThemeEclipse from "@/components/ThemeEclipse";
@@ -73,7 +72,6 @@ export default function RootLayout({
               <SoundProvider>
                 <LuxuryBackground />
                 <ThemeEclipse />
-                <CustomCursor />
                 <PageTransition>
                   {children}
                 </PageTransition>

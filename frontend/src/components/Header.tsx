@@ -20,7 +20,9 @@ export default function Header() {
   const [suggestions, setSuggestions] = useState<any[]>([]);
   const [categories, setCategories] = useState<string[]>([]);
   const [isSearching, setIsSearching] = useState(false);
+  const [isProfileOpen, setIsProfileOpen] = useState(false);
   const searchRef = useRef<HTMLDivElement>(null);
+  const profileRef = useRef<HTMLDivElement>(null);
   const pathname = usePathname();
   const router = useRouter();
 
@@ -29,15 +31,18 @@ export default function Header() {
       if (searchRef.current && !searchRef.current.contains(event.target as Node)) {
         setIsSearchOpen(false);
       }
+      if (profileRef.current && !profileRef.current.contains(event.target as Node)) {
+        setIsProfileOpen(false);
+      }
     };
 
-    if (isSearchOpen) {
+    if (isSearchOpen || isProfileOpen) {
       document.addEventListener("mousedown", handleClickOutside);
     }
     return () => {
       document.removeEventListener("mousedown", handleClickOutside);
     };
-  }, [isSearchOpen]);
+  }, [isSearchOpen, isProfileOpen]);
 
   useEffect(() => {
     const timer = setTimeout(() => {
@@ -140,20 +145,27 @@ export default function Header() {
         
         {/* Desktop Navigation */}
         <nav className="hidden md:flex items-center gap-10">
-          {navLinks.map((link) => (
-            <Link 
-              key={link.href}
-              href={link.href} 
-              onClick={(e) => {
-                playPaperSound();
-                if (link.href === "/") handleHomeClick(e);
-              }}
-              className="text-[11px] font-bold uppercase tracking-[0.2em] text-foreground/70 transition-all hover:text-[#C5A059] relative group"
-            >
-              {link.label}
-              <span className="absolute -bottom-1 left-0 w-0 h-[1px] bg-[#C5A059] transition-all duration-300 group-hover:w-full" />
-            </Link>
-          ))}
+          {navLinks.map((link) => {
+            const isActive = link.href === "/" ? pathname === "/" : pathname.startsWith(link.href);
+            return (
+              <Link 
+                key={link.href}
+                href={link.href} 
+                onClick={(e) => {
+                  playPaperSound();
+                  if (link.href === "/") handleHomeClick(e);
+                }}
+                className={`text-[11px] font-bold uppercase tracking-[0.2em] transition-all relative group ${
+                  isActive ? "text-[#C5A059]" : "text-foreground/70 hover:text-[#C5A059]"
+                }`}
+              >
+                {link.label}
+                <span className={`absolute -bottom-1 left-0 h-[1px] bg-[#C5A059] transition-all duration-300 ${
+                  isActive ? "w-full" : "w-0 group-hover:w-full"
+                }`} />
+              </Link>
+            );
+          })}
         </nav>
 
         <div className="flex items-center gap-6">
@@ -333,31 +345,40 @@ export default function Header() {
           </Link>
 
           {/* User Authentication / Profile */}
-          <div className="relative group">
+          <div className="relative" ref={profileRef}>
             {user ? (
               <div className="flex items-center gap-4">
                 <button 
-                  className="flex items-center gap-2 group p-2 hover:scale-110 transition-all text-foreground/70 hover:text-[#C5A059]"
+                  onClick={() => setIsProfileOpen(!isProfileOpen)}
+                  className={`flex items-center gap-2 p-2 transition-all ${isProfileOpen ? 'text-[#C5A059] scale-110' : 'text-foreground/70'}`}
                   aria-label="User Profile"
                 >
                   <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
                 </button>
                 {/* User Dropdown */}
-                <div className="absolute right-0 top-10 w-48 bg-card border border-[#C5A059]/10 shadow-2xl opacity-0 translate-y-2 pointer-events-none group-hover:opacity-100 group-hover:translate-y-0 group-hover:pointer-events-auto transition-all duration-300 z-[110] p-4 text-center">
-                  <div className="text-[10px] font-bold text-[#C5A059] uppercase tracking-widest mb-4 border-b border-[#C5A059]/10 pb-2">{user.username}</div>
-                  <Link href="/profile" className="block text-[9px] font-bold uppercase tracking-widest text-foreground/40 hover:text-[#C5A059] mb-4">The Ritual Status</Link>
-                  <button 
-                    onClick={logout}
-                    className="block w-full text-[9px] font-bold uppercase tracking-widest text-red-500/60 hover:text-red-500"
-                  >
-                    Vanish (Logout)
-                  </button>
-                </div>
+                {isProfileOpen && (
+                  <div className="absolute right-0 top-12 w-48 bg-card border border-[#C5A059]/30 shadow-2xl animate-in fade-in slide-in-from-top-2 duration-300 z-[110] p-6 text-center backdrop-blur-xl">
+                    <div className="text-[10px] font-black text-[#C5A059] uppercase tracking-widest mb-6 border-b border-[#C5A059]/10 pb-4">{user.username}</div>
+                    <Link 
+                      href="/profile" 
+                      onClick={() => setIsProfileOpen(false)}
+                      className="block text-[9px] font-bold uppercase tracking-[0.4em] text-foreground/40 hover:text-[#C5A059] mb-6 transition-colors"
+                    >
+                      Archive Personnel
+                    </Link>
+                    <button 
+                      onClick={() => { logout(); setIsProfileOpen(false); }}
+                      className="block w-full text-[9px] font-black uppercase tracking-[0.4em] text-red-500/60 hover:text-red-500 transition-colors"
+                    >
+                      Dématerialiser
+                    </button>
+                  </div>
+                )}
               </div>
             ) : (
               <Link 
                 href="/login"
-                className="p-2 transition-all hover:scale-110 text-foreground/70 hover:text-[#C5A059]"
+                className="p-2 text-foreground/70"
                 aria-label="Client Login"
               >
                 <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"><path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"/><polyline points="10 17 15 12 10 7"/><line x1="15" y1="12" x2="3" y2="12"/></svg>
@@ -380,19 +401,24 @@ export default function Header() {
       {isMenuOpen && (
         <div className="md:hidden absolute top-24 left-0 w-full bg-background border-b border-[#C5A059]/10 shadow-2xl animate-in slide-in-from-top duration-300 z-40">
           <nav className="flex flex-col p-8 gap-6">
-            {navLinks.map((link) => (
-              <Link
-                key={link.href}
-                href={link.href}
-                onClick={(e) => {
-                  if (link.href === "/") handleHomeClick(e);
-                  setIsMenuOpen(false);
-                }}
-                className="text-xs font-bold uppercase tracking-[0.3em] text-foreground/70 hover:text-[#C5A059] transition-colors"
-              >
-                {link.label}
-              </Link>
-            ))}
+            {navLinks.map((link) => {
+              const isActive = link.href === "/" ? pathname === "/" : pathname.startsWith(link.href);
+              return (
+                <Link
+                  key={link.href}
+                  href={link.href}
+                  onClick={(e) => {
+                    if (link.href === "/") handleHomeClick(e);
+                    setIsMenuOpen(false);
+                  }}
+                  className={`text-xs font-bold uppercase tracking-[0.3em] transition-colors ${
+                    isActive ? "text-[#C5A059]" : "text-foreground/70 hover:text-[#C5A059]"
+                  }`}
+                >
+                  {link.label}
+                </Link>
+              );
+            })}
           </nav>
         </div>
       )}

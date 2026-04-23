@@ -64,13 +64,13 @@ export default async function RecipesPage() {
                 </div>
               </div>
 
-              <div className="flex flex-col pt-10 space-y-6">
-                <div className="space-y-4 flex-1">
-                  <h3 className="text-3xl font-serif text-foreground font-black uppercase tracking-tighter leading-none group-hover:text-[#C5A059] transition-colors duration-500 min-h-[60px]">
+              <div className="flex flex-col pt-10 space-y-6 flex-1">
+                <div className="space-y-4 flex-1 flex flex-col">
+                  <h3 className="text-3xl font-serif text-foreground font-black uppercase tracking-tighter leading-tight group-hover:text-[#C5A059] transition-colors duration-500 line-clamp-2 min-h-[4.5rem] flex items-center">
                     {recipe.title}
                   </h3>
-                  <div className="max-w-xs">
-                    <p className="text-foreground/40 line-clamp-2 text-base leading-relaxed font-serif italic border-l-2 border-[#C5A059]/10 pl-6 group-hover:border-[#C5A059]/40 transition-colors">
+                  <div className="max-w-xs mt-auto">
+                    <p className="text-foreground/40 line-clamp-2 text-base leading-relaxed font-serif italic border-l-2 border-[#C5A059]/10 pl-6 group-hover:border-[#C5A059]/40 transition-colors min-h-[3rem] flex items-center">
                       {recipe.description}
                     </p>
                   </div>

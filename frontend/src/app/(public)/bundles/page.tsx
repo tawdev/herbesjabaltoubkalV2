@@ -53,26 +53,28 @@ export default async function BundlesPage() {
                    </div>
                  </div>
 
-                 <div className="flex flex-col text-center px-4 space-y-4">
-                    <span className="text-[9px] font-black uppercase tracking-[0.4em] text-[#C5A059]/50 italic">
+                 <div className="flex flex-col text-center px-4 space-y-4 flex-1">
+                    <span className="text-[9px] font-black uppercase tracking-[0.4em] text-[#C5A059]/50 italic block min-h-[1.5em]">
                        Atlas Collection
                     </span>
-                    <h2 className="text-3xl font-serif text-foreground font-black uppercase tracking-tight group-hover:text-[#C5A059] transition-colors leading-none">
+                    <h2 className="text-3xl font-serif text-foreground font-black uppercase tracking-tight group-hover:text-[#C5A059] transition-colors leading-tight line-clamp-1 min-h-[1.5em] flex items-center justify-center">
                        {bundle.name}
                     </h2>
-                    <h3 className="text-xl font-serif text-[#C5A059]/50 font-black font-arabic" dir="rtl">
+                    <h3 className="text-xl font-serif text-[#C5A059]/50 font-black font-arabic min-h-[1.5em] flex items-center justify-center" dir="rtl">
                        {bundle.name_ar}
                     </h3>
                     
-                    <p className="text-base text-foreground/40 font-serif italic leading-relaxed line-clamp-2">
+                    <p className="text-base text-foreground/40 font-serif italic leading-relaxed line-clamp-2 min-h-[3rem]">
                       {bundle.description}
                     </p>
-
-                    <div className="flex items-center justify-center pt-6 border-t border-[#C5A059]/10">
-                       <span className="text-3xl font-serif font-black text-[#C5A059] tabular-nums">
-                          {parseFloat(bundle.price).toLocaleString()}
-                       </span>
-                       <span className="text-[10px] uppercase font-black tracking-widest text-[#C5A059]/50 ml-2">MAD</span>
+                    
+                    <div className="mt-auto pt-6 border-t border-[#C5A059]/10 flex flex-col items-center">
+                      <div className="flex items-center justify-center">
+                         <span className="text-3xl font-serif font-black text-[#C5A059] tabular-nums">
+                            {parseFloat(bundle.price).toLocaleString()}
+                         </span>
+                         <span className="text-[10px] uppercase font-black tracking-widest text-[#C5A059]/50 ml-2">MAD</span>
+                      </div>
                     </div>
                  </div>
                </Link>
