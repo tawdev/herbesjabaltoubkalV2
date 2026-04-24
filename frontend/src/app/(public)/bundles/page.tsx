@@ -4,6 +4,8 @@ import Link from "next/link";
 import Image from "next/image";
 import BundleAddToCartButton from "@/components/BundleAddToCartButton";
 
+export const dynamic = 'force-dynamic';
+
 export default async function BundlesPage() {
   let bundles: any[] = [];
   try {

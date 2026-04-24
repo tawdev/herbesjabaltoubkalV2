@@ -5,6 +5,8 @@ import { getRecipeImage } from "@/lib/images";
 import { Metadata } from "next";
 import { FaUtensils, FaRegClock, FaArrowRightLong } from "react-icons/fa6";
 
+export const dynamic = 'force-dynamic';
+
 export const metadata: Metadata = {
   title: "Alchemic Grimoire | Jabal Toubkal",
   description: "Master the ancestral art of Moroccan cuisine. Discover our traditional recipes and botanical rituals from the High Atlas.",
