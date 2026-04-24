@@ -1,6 +1,10 @@
+"use client";
+
 import Link from "next/link";
 import Image from "next/image";
 import { FaInstagram, FaFacebookF, FaWhatsapp, FaEnvelope, FaLocationDot, FaPhone, FaArrowUpLong } from "react-icons/fa6";
+import { useState, useEffect } from "react";
+import { motion, AnimatePresence } from "framer-motion";
 
 export default function Footer() {
   const scrollToTop = () => {
@@ -106,17 +110,66 @@ export default function Footer() {
               </div>
            </div>
 
-           <button 
-              onClick={scrollToTop}
-              className="flex items-center gap-4 group text-xs font-black uppercase tracking-[0.3em] text-[#C5A059] hover:text-foreground transition-all"
-           >
-              Elevation Ritual
-              <div className="w-10 h-10 border border-[#C5A059]/20 flex items-center justify-center group-hover:bg-[#C5A059] group-hover:text-black transition-all">
-                 <FaArrowUpLong size={12} className="group-hover:-translate-y-2 transition-transform duration-500" />
-              </div>
-           </button>
+           <div className="hidden lg:block text-[10px] font-black uppercase tracking-[0.4em] text-foreground/20">
+             Purity. Wisdom. Heritage.
+           </div>
         </div>
       </div>
+
+      {/* Floating Elevation Ritual (Back to Top) */}
+      <ScrollToTop />
     </footer>
+  );
+}
+
+function ScrollToTop() {
+  const [isVisible, setIsVisible] = useState(false);
+
+  useEffect(() => {
+    const toggleVisibility = () => {
+      if (window.pageYOffset > 300) {
+        setIsVisible(true);
+      } else {
+        setIsVisible(false);
+      }
+    };
+    window.addEventListener("scroll", toggleVisibility);
+    return () => window.removeEventListener("scroll", toggleVisibility);
+  }, []);
+
+  const scrollToTop = () => {
+    window.scrollTo({
+      top: 0,
+      behavior: "smooth",
+    });
+  };
+
+  return (
+    <div className="fixed bottom-28 right-8 z-50">
+      <AnimatePresence>
+        {isVisible && (
+          <motion.div
+            initial={{ opacity: 0, y: 20, scale: 0.8 }}
+            animate={{ opacity: 1, y: 0, scale: 1 }}
+            exit={{ opacity: 0, y: 20, scale: 0.8 }}
+            className="relative group"
+          >
+            {/* Tooltip */}
+            <div className="absolute bottom-1/2 right-full mr-4 translate-y-1/2 whitespace-nowrap bg-white/90 backdrop-blur-md py-2 px-4 rounded-xl shadow-xl border border-gray-100 opacity-0 group-hover:opacity-100 transition-all duration-300 pointer-events-none hidden md:block">
+               <div className="text-[#C5A059] font-black uppercase tracking-widest text-[10px]">Elevation Ritual</div>
+               <div className="text-slate-500 text-[10px] font-bold text-right">Retour au sommet</div>
+            </div>
+
+            <button
+              onClick={scrollToTop}
+              className="w-14 h-14 rounded-full shadow-2xl flex items-center justify-center text-white cursor-pointer overflow-hidden border border-white/20"
+              style={{ background: 'linear-gradient(135deg, #C5A059 0%, #967A41 100%)' }}
+            >
+              <FaArrowUpLong size={24} className="group-hover:-translate-y-1 transition-transform duration-300" />
+            </button>
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </div>
   );
 }

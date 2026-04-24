@@ -86,7 +86,7 @@ export default async function ProductsPage({
             <div className="flex flex-col md:flex-row md:items-end justify-between gap-8 pb-10 border-b border-[#C5A059]/10">
               <div className="space-y-2">
                 <h1 className="text-4xl md:text-5xl font-serif text-[#C5A059] uppercase tracking-tight">
-                  {params.category ? `${params.category}` : "All Botanicals"}
+                  {params.category ? `${params.category}` : "All Products"}
                 </h1>
                 <span className="text-[9px] font-bold text-foreground/20 uppercase tracking-[0.3em]">{products.length} Treasures Unveiled</span>
               </div>

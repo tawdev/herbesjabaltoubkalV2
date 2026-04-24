@@ -6,7 +6,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { useEffect, useState, useRef } from "react";
 import { usePathname, useRouter } from "next/navigation";
-import { FaBars, FaTimes } from "react-icons/fa";
+import { FaBars, FaTimes, FaSignOutAlt, FaUser } from "react-icons/fa";
 import { ThemeToggle } from "./ThemeToggle";
 import { useSound } from "@/context/SoundContext";
 
@@ -362,15 +362,17 @@ export default function Header() {
                     <Link 
                       href="/profile" 
                       onClick={() => setIsProfileOpen(false)}
-                      className="block text-[9px] font-bold uppercase tracking-[0.4em] text-foreground/40 hover:text-[#C5A059] mb-6 transition-colors"
+                      className="flex items-center justify-center gap-3 text-[9px] font-bold uppercase tracking-[0.4em] text-foreground/40 hover:text-[#C5A059] mb-6 transition-colors"
                     >
-                      Archive Personnel
+                      <FaUser size={10} />
+                      Profile
                     </Link>
                     <button 
                       onClick={() => { logout(); setIsProfileOpen(false); }}
-                      className="block w-full text-[9px] font-black uppercase tracking-[0.4em] text-red-500/60 hover:text-red-500 transition-colors"
+                      className="flex items-center justify-center gap-3 w-full text-[9px] font-black uppercase tracking-[0.4em] text-red-500/60 hover:text-red-500 transition-colors"
                     >
-                      Dématerialiser
+                      <FaSignOutAlt size={10} />
+                      Logout
                     </button>
                   </div>
                 )}

@@ -59,14 +59,26 @@ export class AuthController {
   @UseGuards(AuthGuard('google'))
   async googleAuthRedirect(@Req() req: any, @Res() res: Response) {
     const { access_token, user } = await this.authService.googleLogin(req);
-    // Redirect to frontend with token
+    
+    // Redirect to frontend with token and optional redirect path
     const frontendUrl = process.env.FRONTEND_URL;
     if (!frontendUrl) {
       console.error('ERROR: FRONTEND_URL environment variable is missing!');
-      // In production, we MUST have this. If missing, we fallback to a safe default or log error.
     }
     const targetUrl = frontendUrl || 'http://localhost:3000';
-    return res.redirect(`${targetUrl}/login?token=${access_token}&user=${JSON.stringify(user)}`);
+    
+    // Check if we have a redirect parameter from the original request (via state or query)
+    // Note: Passport-google-oauth20 doesn't automatically pass query params to callback.
+    // However, we can use the 'state' if we want to be robust. 
+    // For now, let's see if we can get it from the request if the user passed it.
+    const redirectTo = req.query.state || ''; // Usually stored in state
+    
+    let finalUrl = `${targetUrl}/login?token=${access_token}&user=${JSON.stringify(user)}`;
+    if (req.query.state) {
+      finalUrl += `&redirect=${encodeURIComponent(req.query.state as string)}`;
+    }
+
+    return res.redirect(finalUrl);
   }
 
   @Get('profile')

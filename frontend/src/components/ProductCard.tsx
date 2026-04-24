@@ -4,7 +4,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { getProductImage } from "@/lib/images";
 import { useCart } from "@/context/CartContext";
-import { FaBagShopping, FaXmark } from "react-icons/fa6";
+import { FaBagShopping, FaXmark, FaEye } from "react-icons/fa6";
 import { useState, useEffect } from "react";
 import { createPortal } from "react-dom";
 import { useSound } from "@/context/SoundContext";
@@ -30,7 +30,7 @@ export default function ProductCard({ product }: ProductCardProps) {
   const pricePerUnit = baseWeightNum > 0 ? basePriceNum / baseWeightNum : basePriceNum;
 
   useEffect(() => {
-    if (isModalOpen && !selectedWeight) setSelectedWeight(baseWeightNum);
+    if (isModalOpen && selectedWeight === null) setSelectedWeight(baseWeightNum);
   }, [isModalOpen, baseWeightNum, selectedWeight]);
 
   const handleOpenModal = (e: React.MouseEvent) => {
@@ -45,6 +45,7 @@ export default function ProductCard({ product }: ProductCardProps) {
     e.stopPropagation();
     playPaperSound();
     setIsModalOpen(false);
+    setSelectedWeight(null);
   };
 
   const confirmAddToCart = (e: React.MouseEvent) => {
@@ -89,9 +90,14 @@ export default function ProductCard({ product }: ProductCardProps) {
           />
           <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-700" />
           
-          {/* Subtle Quick View Text */}
-          <div className="absolute bottom-8 left-0 right-0 text-center opacity-0 group-hover:opacity-100 translate-y-4 group-hover:translate-y-0 transition-all duration-700">
-             <span className="text-[9px] font-black uppercase tracking-[0.6em] text-[#C5A059]">View Ritual Details</span>
+          {/* Subtle Quick View Overlay */}
+          <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all duration-700 bg-black/40 backdrop-blur-[2px]">
+             <div className="flex flex-col items-center gap-4 translate-y-4 group-hover:translate-y-0 transition-all duration-700">
+                <div className="w-12 h-12 rounded-full border border-[#C5A059]/40 flex items-center justify-center text-[#C5A059] bg-black/20">
+                   <FaEye size={20} />
+                </div>
+                <span className="text-[9px] font-black uppercase tracking-[0.6em] text-white">Consulter</span>
+             </div>
           </div>
         </div>
 

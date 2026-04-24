@@ -6,21 +6,31 @@ import { API_URL } from "@/lib/api";
 import Link from "next/link";
 import { motion, AnimatePresence } from "framer-motion";
 import Image from "next/image";
+import { FaEye, FaEyeSlash } from "react-icons/fa";
 
 export default function RegisterPage() {
   const [formData, setFormData] = useState({
     name: "",
     email: "",
     password: "",
+    confirmPassword: "",
     phone: "",
     address: "",
   });
+  const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
   const { login } = useAuth();
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value });
+    const { name, value } = e.target;
+    if (name === "phone") {
+      const cleaned = value.replace(/[^\d+]/g, "");
+      setFormData({ ...formData, [name]: cleaned });
+    } else {
+      setFormData({ ...formData, [name]: value });
+    }
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -28,11 +38,26 @@ export default function RegisterPage() {
     setLoading(true);
     setError("");
 
+    if (formData.password !== formData.confirmPassword) {
+      setError("Les secrets ne correspondent pas. Veuillez les harmoniser.");
+      setLoading(false);
+      return;
+    }
+
+    // Phone validation (Moroccan format)
+    const phoneRegex = /^(?:\+212|0)([567]\d{8})$/;
+    if (formData.phone && !phoneRegex.test(formData.phone)) {
+      setError("Le lien téléphonique est invalide. Utilisez le format +212 ou 06/07.");
+      setLoading(false);
+      return;
+    }
+
     try {
+      const { confirmPassword, ...registerData } = formData;
       const regRes = await fetch(`${API_URL}/auth/user/register`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(formData),
+        body: JSON.stringify(registerData),
       });
 
       if (regRes.ok) {
@@ -50,7 +75,8 @@ export default function RegisterPage() {
         }
       } else {
         const errData = await regRes.json();
-        setError(errData.message || "Impossible de forger cet accès. Vérifiez les informations.");
+        const msg = Array.isArray(errData.message) ? errData.message[0] : errData.message;
+        setError(msg || "Impossible de forger cet accès. Vérifiez les informations.");
       }
     } catch (err) {
       setError("Un obstacle empêche la création de votre lien avec la montagne.");
@@ -148,12 +174,37 @@ export default function RegisterPage() {
                         <label className="text-[9px] font-black uppercase tracking-[0.3em] text-[#C5A059] mb-2 block">Secret (Mot de passe)</label>
                         <input
                             name="password"
-                            type="password"
+                            type={showPassword ? "text" : "password"}
                             value={formData.password}
                             onChange={handleChange}
                             required
-                            className="w-full bg-transparent border-b border-[#C5A059]/20 py-3 text-sm text-black focus:outline-none focus:border-[#C5A059] transition-all"
+                            className="w-full bg-transparent border-b border-[#C5A059]/20 py-3 text-sm text-black focus:outline-none focus:border-[#C5A059] transition-all pr-10"
                         />
+                        <button
+                          type="button"
+                          onClick={() => setShowPassword(!showPassword)}
+                          className="absolute bottom-3 right-0 text-[#C5A059]/40 hover:text-[#C5A059] transition-colors"
+                        >
+                          {showPassword ? <FaEyeSlash size={16} /> : <FaEye size={16} />}
+                        </button>
+                    </div>
+                    <div className="relative">
+                        <label className="text-[9px] font-black uppercase tracking-[0.3em] text-[#C5A059] mb-2 block">Confirmation du Secret</label>
+                        <input
+                            name="confirmPassword"
+                            type={showConfirmPassword ? "text" : "password"}
+                            value={formData.confirmPassword}
+                            onChange={handleChange}
+                            required
+                            className="w-full bg-transparent border-b border-[#C5A059]/20 py-3 text-sm text-black focus:outline-none focus:border-[#C5A059] transition-all pr-10"
+                        />
+                        <button
+                          type="button"
+                          onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+                          className="absolute bottom-3 right-0 text-[#C5A059]/40 hover:text-[#C5A059] transition-colors"
+                        >
+                          {showConfirmPassword ? <FaEyeSlash size={16} /> : <FaEye size={16} />}
+                        </button>
                     </div>
                 </div>
 
@@ -164,6 +215,8 @@ export default function RegisterPage() {
                             name="phone"
                             value={formData.phone}
                             onChange={handleChange}
+                            pattern="^(?:\+212|0)([567]\d{8})$"
+                            title="Format: +212... ou 06... / 07... / 05..."
                             className="w-full bg-transparent border-b border-[#C5A059]/20 py-3 text-sm text-black focus:outline-none focus:border-[#C5A059] transition-all"
                         />
                     </div>

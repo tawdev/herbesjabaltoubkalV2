@@ -87,4 +87,32 @@ export class ProductsService {
       where: { id },
     });
   }
+
+  async addReview(productId: number, data: any) {
+    return this.prisma.review.create({
+      data: {
+        product_id: productId,
+        user_name: data.user_name,
+        rating: Number(data.rating),
+        comment: data.comment,
+      },
+    });
+  }
+
+  async findAllReviews() {
+    return this.prisma.review.findMany({
+      include: {
+        product: {
+          select: { name: true }
+        }
+      },
+      orderBy: { created_at: 'desc' }
+    });
+  }
+
+  async deleteReview(id: number) {
+    return this.prisma.review.delete({
+      where: { id }
+    });
+  }
 }

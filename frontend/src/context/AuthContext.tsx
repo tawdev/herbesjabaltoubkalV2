@@ -13,7 +13,7 @@ interface User {
 interface AuthContextType {
   user: User | null;
   token: string | null;
-  login: (token: string, user: User) => void;
+  login: (token: string, user: User, redirectTo?: string) => void;
   logout: () => void;
   isLoading: boolean;
 }
@@ -43,13 +43,15 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     setIsLoading(false);
   }, []);
 
-  const login = (newToken: string, newUser: User) => {
+  const login = (newToken: string, newUser: User, redirectTo?: string) => {
     setToken(newToken);
     setUser(newUser);
     localStorage.setItem("user_token", newToken);
     localStorage.setItem("user_data", JSON.stringify(newUser));
     
-    if (newUser.role === 'admin') {
+    if (redirectTo) {
+      router.push(redirectTo);
+    } else if (newUser.role === 'admin') {
       router.push("/admin/dashboard");
     } else {
       router.push("/products");

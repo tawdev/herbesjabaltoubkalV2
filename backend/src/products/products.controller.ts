@@ -58,4 +58,21 @@ export class ProductsController {
   remove(@Param('id', ParseIntPipe) id: number) {
     return this.productsService.remove(id);
   }
+
+  @Post(':id/reviews')
+  addReview(@Param('id', ParseIntPipe) id: number, @Body() data: any) {
+    return this.productsService.addReview(id, data);
+  }
+
+  @UseGuards(JwtAuthGuard)
+  @Get('all/reviews')
+  findAllReviews() {
+    return this.productsService.findAllReviews();
+  }
+
+  @UseGuards(JwtAuthGuard)
+  @Delete('reviews/:id')
+  deleteReview(@Param('id', ParseIntPipe) id: number) {
+    return this.productsService.deleteReview(id);
+  }
 }

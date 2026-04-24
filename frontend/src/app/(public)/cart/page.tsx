@@ -8,6 +8,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
+import { FaCheck, FaTrashCan, FaPlus, FaMinus, FaLock, FaTruckFast, FaShieldHalved, FaLeaf } from "react-icons/fa6";
 
 export default function CartPage() {
   const { items, updateQuantity, removeFromCart, clearCart, totalItems } = useCart();
@@ -48,6 +49,14 @@ export default function CartPage() {
 
   const handleSubmitOrder = async (e: React.FormEvent) => {
     e.preventDefault();
+    
+    // Phone validation (Moroccan format)
+    const phoneRegex = /^(?:\+212|0)([567]\d{8})$/;
+    if (orderInfo.phone && !phoneRegex.test(orderInfo.phone)) {
+      alert("Format téléphone invalide (+212 ou 06/07).");
+      return;
+    }
+
     setIsSubmitting(true);
     
     try {
@@ -155,9 +164,18 @@ export default function CartPage() {
   return (
     <div className="bg-background min-h-screen pb-40 transition-colors duration-500">
       <div className="container mx-auto py-32 px-6 lg:px-12">
-        <header className="flex flex-col gap-4 mb-24 items-center lg:items-start text-center lg:text-left">
-            <span className="text-[10px] font-bold uppercase tracking-[0.5em] text-[#C5A059]">The Selection</span>
-            <h1 className="text-5xl md:text-7xl font-serif text-[#C5A059] uppercase tracking-tighter leading-none">Votre <span className="italic">Panier</span></h1>
+        <header className="flex flex-col lg:flex-row justify-between items-center lg:items-end gap-8 mb-24 text-center lg:text-left">
+            <div className="flex flex-col gap-4">
+               <span className="text-[10px] font-bold uppercase tracking-[0.5em] text-[#C5A059]">The Selection</span>
+               <h1 className="text-5xl md:text-7xl font-serif text-[#C5A059] uppercase tracking-tighter leading-none">Votre <span className="italic">Panier</span></h1>
+            </div>
+            <button 
+               onClick={clearCart}
+               className="text-[9px] font-black uppercase tracking-[0.4em] text-red-500/50 hover:text-red-500 transition-all border border-red-500/10 hover:border-red-500/30 px-6 py-3 rounded-sm flex items-center gap-2 group"
+            >
+               <FaTrashCan className="group-hover:rotate-12 transition-transform" />
+               Vider le Panier
+            </button>
         </header>
 
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-24 items-start">
@@ -283,9 +301,17 @@ export default function CartPage() {
                                 required={field.id !== 'email'}
                                 type={field.type}
                                 placeholder={field.placeholder}
+                                pattern={field.id === 'phone' ? "^(?:\\+212|0)([567]\\d{8})$" : undefined}
+                                title={field.id === 'phone' ? "Format: +212... ou 06... / 07... / 05..." : undefined}
                                 className="w-full bg-transparent border-b border-foreground/10 py-4 text-foreground font-serif italic text-sm focus:outline-none focus:border-[#C5A059] transition-all placeholder:text-foreground/20"
                                 value={field.value}
-                                onChange={(e) => setOrderInfo({ ...orderInfo, [field.id]: e.target.value })}
+                                onChange={(e) => {
+                                    let val = e.target.value;
+                                    if (field.id === "phone") {
+                                        val = val.replace(/[^\d+]/g, "");
+                                    }
+                                    setOrderInfo({ ...orderInfo, [field.id]: val });
+                                }}
                             />
                         </div>
                     ))}
